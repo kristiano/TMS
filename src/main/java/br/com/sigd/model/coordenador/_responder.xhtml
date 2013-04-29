@@ -1,0 +1,33 @@
+   <ui:composition
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:p="http://primefaces.org/ui"
+                    xmlns:ui="http://java.sun.com/jsf/facelets"
+                    xmlns:h="http://java.sun.com/jsf/html"
+                    xmlns:f="http://java.sun.com/jsf/core"
+                    >                        
+                    <h:form prependId="false">                                                  
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel value="Nome: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.usuario.nome}" />
+                            <h:outputLabel value="Situação: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.situacoes.nome}" />
+                            <h:outputLabel value="Problema Associado: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.problemasAssociados.nome}" />
+                            <h:outputLabel value="Turma: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.turma.codigoTurma}" />
+                            <h:outputLabel value="Descrição: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.descricao}" />
+                            <h:outputLabel value="Data da Solicitação: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.dataSolicitacao}" />                            
+                            <h:outputLabel value="Data do Encaminhamento: " style="font-weight: bold;"/>
+                            <h:outputLabel value="#{UserFeedbackController.entity.dataEncaminhamento}" />                            
+                            <h:outputLabel value="*Responder: " style="font-weight: bold;"/>
+                            <p:inputTextarea title="Digite uma resposta" rows="6" cols="60" value="#{UserFeedbackController.entity.resposta}"/>  
+                            <p:commandButton id="resposta" value="Enviar" ajax="false" action="#{UserFeedbackController.responder('_listar')}" >
+                                <p:tooltip for="resposta" value="Clique aqui para Enviar resposta" showEffect="fade" hideEffect="fade"/>
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:form>                           
+                    <h:outputLabel value="*Caso tenha setado um responsável a resposta será ignorada." style="font-weight: bold;"/>
+                </ui:composition>
+           

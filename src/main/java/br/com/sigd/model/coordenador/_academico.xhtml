@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Academicos
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">            
+        <p:messages/>
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog header="Cadastrar Novo Acadêmico" modal="false" showEffect="fade" hideEffect="fade" widgetVar="inserir">                                                            
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel for="matricula" value="Número de matrícula: "/>  
+                    <p:inputText title="Exemplo: 464645" id="matricula" required="true" value="#{AcademicoController.entity.matricula}" />                                        
+
+                    <h:outputLabel for="username" value="Nome de Usuário: " rendered="#{AcademicoController.isNew}"/>  
+                    <p:inputText title="Exemplo: Paulo" id="username" required="true" value="#{AcademicoController.entity.username}" rendered="#{AcademicoController.isNew}"/>                      
+
+                    <h:outputLabel for="nome" value="Nome Completo: "/>  
+                    <p:inputText title="Exemplo: Paulo José da Silva" id="nome" required="true" value="#{AcademicoController.entity.nome}" />               
+
+                    <h:outputLabel for="email" value="Email: "/>  
+                    <p:inputText title="Exemplo: paulo@live.com" id="email" required="true" value="#{AcademicoController.entity.email}" />             
+
+                </h:panelGrid>  
+
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="insertAcademico" value="Inserir" actionListener="#{AcademicoController.insert}" oncomplete="inserir.hide()" rendered="#{AcademicoController.isNew}" ajax="false">
+                    <p:tooltip for="insertAcademico" value="Clique aqui para Inserir um novo academico ao Sistema" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="alterAcademico" value="Atualizar" actionListener="#{AcademicoController.update}" oncomplete="inserir.hide()" rendered="#{AcademicoController.isEdit}" ajax="false">
+                    <p:tooltip for="alterAcademico" value="Clique aqui para Atualizar os dados deste academico" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+
+
+            </p:dialog>
+        </h:form>            
+
+        <h:form prependId="false" id="table" class="conteudo">
+            <!-- So muda o nome do Bean-->
+            <br/>
+            <p:commandButton id="buttonNovoAcad" value="Novo Acadêmico" oncomplete="inserir.show()" actionListener="#{AcademicoController.prepareNew()}" update=":dialog">
+                <p:tooltip for="buttonNovoAcad" value="Clique aqui para Criar um novo academico" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>                
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não há acadêmicos"  value="#{AcademicoController.list}" var="academico" paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10">
+                <f:facet name="header">Lista de Acadêmicos</f:facet>  
+
+
+                <p:column style="width: 80px;">  
+                    <f:facet name="header" style="height: 3px;" ><h:outputText value="Matrícula" /></f:facet>  
+                    <h:outputText value="#{academico.matricula}" style="height: 3px;"/>  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+                <p:column style="width: 90px;">  
+                    <f:facet name="header"><h:outputText value="Usuário" /></f:facet>  
+                    <h:outputText value="#{academico.username}" />  
+                </p:column>  
+
+                <p:column style="width: 150px;">  
+                    <f:facet name="header"><h:outputText value="Nome" /></f:facet>  
+                    <h:outputText value="#{academico.nome}" />  
+                </p:column>  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <div id="acao">         
+                        <p:commandButton id="buttonEditarAcad" value="Editar" oncomplete="inserir.show()" actionListener="#{AcademicoController.prepareEdit}"  update=":dialog">
+                            <f:setPropertyActionListener value="#{academico}" target="#{AcademicoController.entity}" /> 
+                            <p:tooltip for="buttonEditarAcad" value="Clique aqui para Editar este academico" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="buttonExcluirAcad" value="Excluir" action="#{AcademicoController.remove}" update=":table"> 
+                            <f:setPropertyActionListener value="#{academico}" target="#{AcademicoController.entity}" /> 
+                            <p:tooltip for="buttonExcluirAcad" value="Clique aqui para Excluir este academico" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>                
+        </h:form>       
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Doctor
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog  modal="false" showEffect="fade" hideEffect="fade"  widgetVar="inserir" resizable="false" closable="true">                        
+
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel  value="ID"/>                                                           
+                    <p:inputText  title="Exemplo: 864118484"  required="true" maxlength="100" value="#{ProfessorController.entity.matricula}" />                
+
+                    <h:outputLabel  value="User Name"/>  
+                    <p:inputText title="Digite um nome para acesso ao sistema. Exemplo: Paulo" required="true" value="#{ProfessorController.entity.username}" />     
+
+
+                    <h:outputLabel  value="Name "/>  
+                    <p:inputText title="Fullname . Exemplo: Paulo José da Silva" required="true" value="#{ProfessorController.entity.nome}" />     
+
+                    <h:outputLabel  value="Transplantation Unit "/> 
+                    <h:selectOneMenu required="true" requiredMessage="select one Transplantation Unit" value="#{ProfessorController.entity.curso}"  style="width:100px;" converter="baseEntityConverter">                                    
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItems  value="#{CursoController.list}" var="curso" itemLabel="#{curso.nome}" itemValue="#{curso}"  />
+                    </h:selectOneMenu>
+
+                </h:panelGrid>  
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="buttonInserirProf" value="Insert" actionListener="#{ProfessorController.insert}" oncomplete="inserir.hide()" rendered="#{ProfessorController.isNew}" update=":table">
+                    <p:tooltip for="buttonInserirProf" value="Clique aqui para Inserir o Professor" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonAtualizarProf" value="Update" actionListener="#{ProfessorController.update}" oncomplete="inserir.hide()" rendered="#{ProfessorController.isEdit}" update=":table">
+                    <p:tooltip for="buttonAtualizarProf" value="Clique aqui para Atualizar o Professor" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton value="Cancel" onclick="inserir.hide()" type="button"/>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">
+            <!-- So muda o nome do Bean-->
+            <p:messages autoUpdate="true"  />
+            <p:commandButton id="buttonNovoProf" value="New Doctor" oncomplete="inserir.show()" actionListener="#{ProfessorController.prepareNew()}" update=":dialog">
+                <p:tooltip for="buttonNovoProf" value="Clique aqui para adicionar um novo Professor ao Sistema" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>  
+            <p:dataTable  id = "dataTable" value="#{ProfessorController.list}" var="professor"     paginator="true" rows="10"  
+                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                          rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">  
+                    List of Doctors
+                </f:facet>  
+
+                <p:column>  
+                    <f:facet name="header" id="mat">  
+                        <h:outputText value="ID" id="mati" />  
+                    </f:facet>  
+                    <h:outputText value="#{professor.matricula}" />  
+                </p:column>  
+
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="Name" />  
+                    </f:facet>  
+                    <h:outputText value="#{professor.nome}" />  
+                </p:column>  
+                <p:column>  
+                    <f:facet name="header">  
+                        <h:outputText value="Curso" />  
+                    </f:facet>  
+                    <h:outputText value="#{professor.curso.nome}" />  
+                </p:column>  
+
+                <!-- De acordo com os campos da entidade-->
+
+
+                <!-- So muda o nome do Bean-->
+
+                <p:column>
+                    <div id="acao">
+                        <p:commandButton id="buttonExcluirProf" icon="ui-icon-trash" action="#{ProfessorController.remove}" update=":table"> 
+                            <f:setPropertyActionListener value="#{professor}" target="#{ProfessorController.entity}" /> 
+                            <p:tooltip for="buttonExcluirProf" value="Clique aqui para Excluir este Professor" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                       <p:commandButton id="buttonEdit" icon="ui-icon-pencil" oncomplete="inserir.show()" actionListener="#{ProfessorController.prepareEdit}" update=":dialog">
+                            <f:setPropertyActionListener value="#{professor}" target="#{ProfessorController.entity}" /> 
+                            <p:tooltip for="buttonEdit" value="Clique aqui para Editar este Professor" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>  
+            * Doctor will only be deleted if it has no link with the proposal or project.
+        </h:form>       
+    </ui:define>               
+</ui:composition>

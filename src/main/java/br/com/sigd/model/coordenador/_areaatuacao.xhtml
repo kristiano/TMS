@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Area Atuação
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">                
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog widgetVar="inserir">                                                            
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel for="nome" value="Nome: "/>  
+                    <p:inputText title="Digite o nome da Area de Atuação" id="nome" required="true" value="#{AreaAtuacaoController.entity.nome}" />                                        
+
+                    <h:outputLabel for="codigo" value="Código: "/>  
+                    <p:inputText title="Digite o codigo" id="codigo" required="true" value="#{AreaAtuacaoController.entity.codigoArea}" />                                                                                   
+
+                    <h:outputText  value="Pai: " />
+                    <p:selectOneMenu value="#{AreaAtuacaoController.entity.pai}" converter="baseEntityConverter">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue="" itemDisabled="false"/>
+                        <f:selectItems value="#{AreaAtuacaoController.list}" var="area" itemLabel="#{area.nome}" itemValue="#{area}" />                                                                                        
+                    </p:selectOneMenu>                                                 
+
+                </h:panelGrid>  
+
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="buttonInserirArea" value="Inserir" actionListener="#{AreaAtuacaoController.insert}" oncomplete="inserir.hide()" rendered="#{AreaAtuacaoController.isNew}" update=":table">
+                    <p:tooltip for="buttonInserirArea" value="Clique aqui para Inserir uma nova 'Area de Atuação'" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonAtualizarArea" value="Atualizar" actionListener="#{AreaAtuacaoController.update}" oncomplete="inserir.hide()" rendered="#{AreaAtuacaoController.isEdit}" update=":table">
+                    <p:tooltip for="buttonAtualizarArea" value="Clique aqui para Atualizar os dados" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">
+            <!-- So muda o nome do Bean-->   
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <br/><br/>
+            <p:commandButton id="buttonNovaArea" value="Nova Área" oncomplete="inserir.show()" actionListener="#{AreaAtuacaoController.prepareNew()}" update=":dialog">
+                <p:tooltip for="buttonNovaArea" value="Clique aqui para Criar uma nova Area de Atuação" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>                
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não há area de atuação cadastrada"  value="#{AreaAtuacaoController.list}" var="area" paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10">
+
+                <f:facet name="header">Áreas de Atuação</f:facet>  
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Nome" /></f:facet>  
+                    <h:outputText value="#{area.nome}" />  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Código" /></f:facet>  
+                    <h:outputText value="#{area.codigoArea}" />  
+                </p:column>  
+
+                <!-- De acordo com os campos da entidade-->
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Pai" /></f:facet>  
+                    <h:outputText value="#{area.pai.nome}" />  
+                </p:column>  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <div id="acao">
+                        <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                        <p:commandButton id="buttonEditarArea" value="Editar" oncomplete="inserir.show()" actionListener="#{AreaAtuacaoController.prepareEdit}" update=":dialog">
+                            <f:setPropertyActionListener value="#{area}" target="#{AreaAtuacaoController.entity}" /> 
+                            <p:tooltip for="buttonEditarArea" value="Clique aqui para Editar esta Area de Atuação" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="buttonExcluirArea" value="Excluir" action="#{AreaAtuacaoController.remove}" update=":table" ajax="false"> 
+                            <f:setPropertyActionListener value="#{area}" target="#{AreaAtuacaoController.entity}" /> 
+                            <p:tooltip for="buttonExcluirArea" value="Clique aqui para Excluir esta Area de Atuação" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>                
+        </h:form> 
+    </ui:define>
+</ui:composition>

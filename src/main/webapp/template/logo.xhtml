@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:sec="http://www.springframework.org/security/tags">                       
+    <h:body> 
+        <sec:authorize ifAnyGranted="ROLE_ACADEMICO"><a href="#{facesContext.externalContext.request.contextPath}/area-academico"><img src="#{pageContext.request.contextPath}/tms/imagens/TMS.jpg" style="margin-left: 400px; margin-top: 25px;"/></a></sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_PROFESSOR"><a href="#{facesContext.externalContext.request.contextPath}/area-professor"><img src="#{pageContext.request.contextPath}/tms/imagens/TMS.jpg" style="margin-left: 400px; margin-top: 25px;"/></a></sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_COORDENADOR"><a href="#{facesContext.externalContext.request.contextPath}/area-coordenador"><img src="#{pageContext.request.contextPath}/tms/imagens/TMS.jpg" style="margin-left: 400px; margin-top: 25px;"/></a></sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMINISTRADOR"><a href="#{facesContext.externalContext.request.contextPath}/area-administrador"><img src="#{pageContext.request.contextPath}/tms/imagens/TMS.jpg" style="margin-left: 400px; margin-top: 25px;"/></a></sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ANONYMOUS"><a href="#{facesContext.externalContext.request.contextPath}/"><img src="#{pageContext.request.contextPath}/tms/imagens/TMS.jpg" style="margin-left: 400px; margin-top: 25px;"/></a></sec:authorize>
+        
+    </h:body>    
+</ui:composition>
+

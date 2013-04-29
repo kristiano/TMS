@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Professor
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">                                  
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog header="Cadastrar Novo Professor" modal="false" showEffect="fade" hideEffect="fade" widgetVar="inserir">                        
+
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel  value="Matricula:"/>                                                           
+                    <p:inputText title="Exemplo: 45464" value="#{ProfessorController.entity.matricula}" />                       
+
+
+                    <h:outputLabel for="username" value="Nome de Usuário: "/>  
+                    <p:inputText title="Nome de acesso ao sistema. Exemplo: paulo" id="username" required="true" value="#{ProfessorController.entity.username}" />              
+
+                    <h:outputLabel  value="Nome: "/>  
+                    <p:inputText title="Nome completo. Exemplo: Paulo José da Silva" id="codigo" required="true" value="#{ProfessorController.entity.nome}" />     
+
+
+
+                </h:panelGrid>  
+
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="inserirProf" value="Inserir" actionListener="#{ProfessorController.insert}" oncomplete="inserir.hide()" rendered="#{ProfessorController.isNew}" update=":table">
+                    <p:tooltip for="inserirProf" value="Clique aqui para Inserir o novo professor" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">     
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <br/><br/>
+            <!-- So muda o nome do Bean-->
+            <p:commandButton id="novoProf" value="Novo Professor" oncomplete="inserir.show()" actionListener="#{ProfessorController.prepareNew()}" update=":dialog">
+                <p:tooltip for="novoProf" value="Clique aqui para Inserir um novo professor ao Sistema" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>                
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não professores cadastrados"  value="#{ProfessorController.list}" var="professor" paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10">
+
+                <f:facet name="header">Lista de Professores</f:facet> 
+
+
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Matricula" /></f:facet>  
+                    <h:outputText value="#{professor.matricula}" />  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Nome" /></f:facet>  
+                    <h:outputText value="#{professor.nome}" />  
+                </p:column> 
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Nome de usuário" /></f:facet>  
+                    <h:outputText value="#{professor.username}" />  
+                </p:column> 
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Quant Orientando" /></f:facet>  
+                    <h:outputText value="#{professor.quantidadeOrientando}" />  
+                </p:column>  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ação" /></f:facet>  
+                    <div id="acao">
+                        <p:commandButton id="excluirProf" value="Excluir" action="#{ProfessorController.remove}" update=":table"> 
+                            <f:setPropertyActionListener value="#{professor}" target="#{ProfessorController.entity}" /> 
+                            <p:tooltip for="excluirProf" value="Clique aqui para Excluir estes dados" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>              
+
+
+        </h:form>      
+    </ui:define>
+</ui:composition>

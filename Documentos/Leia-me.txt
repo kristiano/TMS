@@ -1,0 +1,33 @@
+Primefaces 3.0M4
+Mojarra 2.1.4
+
+Fase:
+
+- Login 100%
+- Terminando Coordenador (90%)
+
+Feito:
+
+-
+
+
+A concluir:
+
+- Falta editar turma e banca.								Lazy
+- Terminar página de login e páginas de erro.						Fernando		ok
+- Editar Proposta (Professor).								Fernando 
+- FeedBack Proposta, capítulo e Projeto.							Fernando
+- Editar Perfil (Acadêmico, Professor, Coordenador)						Fernando e Glaubos	ok(Glaubos)
+- No alterar senha, deve ter o campo repetir senha pra verificar se o usuário digitou senhas iguais.	Glaubos		ok
+- Em COORDENADOR, ao Adicionar Acadêmico deve adicionar o campo editar usuario.			Fernando
+- Em COORDENADOR, mostrar todos os acadêmicos de uma turma no botão detalhar.		Fernando
+- Mensagens de erro, conclusão e mensagem datatable					Glaubos		ok
+- Validações									Fernando e Glaubos
+- Em ACADÊMICO, fazer página de capítulos.						Glaubos
+- Em ADMINISTRADOR, consertar a parte curso.						Glaubos		ok
+- Em ADMINISTRADOR, consertar a parte disciplina.						Glaubos		ok
+- Em ADMINISTRADOR, copiar turma de COORDENADOR.					Glaubos		ok
+Upload com sucesso - Mensagem							Glaubos		ok
+Você não fez upload do arquivo da proposta - Mensagem					Glaubos		ok
+Na função de inserir proposta deve buscar acadêmico no controller				Glaubos		ok
+Não tá buscando os projetos de acadêmico e professor					Fernando

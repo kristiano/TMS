@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        UserFeedback - new situation
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+                
+        <h:form class="conteudo">
+            <h:outputLabel value="situations " style="font-weight: bold;"/><br/><br/>
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <h:outputLabel value="name " style="font-weight: bold;"/>                    
+            <h:inputText title="Digite uma nova Situação" value="#{SituacoesController.entity.nome}" />
+            <p:commandButton id="buttonInserirSit" value="insert" actionListener="#{SituacoesController.insert()}" update=":centro">
+                <p:tooltip for="buttonInserirSit" value="Clique aqui para Inserir no Sistema" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br/><br/><br/>
+            <p:dataTable emptyMessage="no records" value="#{SituacoesController.list}" var="situacao" resizableColumns="true">
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{situacao.id}" />  
+                </p:column>  
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" name" /></f:facet>  
+                    <h:outputText value="#{situacao.nome}" />  
+                </p:column>  
+                <p:column>
+                    <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                    <p:commandButton id="buttonExcluirSit" alt="remove" value="remove" action="#{SituacoesController.remove()}" ajax="false">
+                        <f:setPropertyActionListener value="#{situacao}" target="#{SituacoesController.entity}" /> 
+                        <p:tooltip for="buttonExcluirSit" value="Clique aqui para Excluir do Sistema" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>            

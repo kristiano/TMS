@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">   
+
+    <ui:define name="title">
+        Proposals
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+        <h:form prependId="false" class="conteudo" id="dialog2">
+            <p:dialog widgetVar="feedback" width="500" height="300" >                        
+
+                <h:panelGrid columns="2" cellpadding="5">                                                                
+
+                    <h:outputText  value="Status: " />
+                    <h:outputText  value="#{PropostaController.entity.propostaStatus.nome}" />                               
+
+                    <h3>Log:</h3><br/>
+                    <p:dataList  value="#{PropostaController.entity.feedBack}" var="feedback" type="ordered">
+                        #{feedback.feedback} - #{feedback.data}<br/>
+                    </p:dataList>
+
+                </h:panelGrid>                                                          
+
+                <p:commandButton value="Close:" action="pretty:proposta-academico" ajax="false" immediate="true"/>
+
+            </p:dialog> 
+
+        </h:form>
+
+        <p:messages id="msgsPai" showDetail="true" />
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog header="new proposal" modal="false" showEffect="fade" hideEffect="fade"  widgetVar="inserir">            
+
+                <p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+
+                    <h:outputLabel  value="Title:"/>                                                           
+                    <p:inputText  value="#{PropostaController.entity.titulo}" required="true" requiredMessage="enter a title" />                       
+
+                    <h:outputLabel  value="Theme:"/>  
+                    <p:inputText  id="codigo" required="true" requiredMessage="enter a theme" value="#{PropostaController.entity.tema}" />                              
+
+
+
+                    <h:outputLabel  value="transplantation research:"/> 
+                    <p:selectOneMenu id="turma" required="true" requiredMessage="chosse one transplantation research" value="#{PropostaController.idTurma}" style="width:250px;" >
+                        
+                        <f:selectItems  value="#{TurmaController.list}" var="obj" itemLabel="#{obj.ano} / #{obj.semestre} - #{obj.disciplina.nome}" itemValue="#{obj.id}"  />
+                    </p:selectOneMenu>
+
+
+                    <h:outputLabel rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}" value="Field of Expertise:"/> 
+                    <p:selectManyMenu value="#{PropostaController.entity.areaAtuacao}" rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}" required="false" requiredMessage="Escolha uma área de atuação" converter="baseEntityConverter"  style="width:250px;" >                                  
+                        <f:selectItems  value="#{AreaAtuacaoController.list}" var="obj" rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}" itemLabel="#{obj.nome}" itemValue="#{obj}"  />
+                    </p:selectManyMenu>
+
+                    <h:outputLabel value="Supervisors:" rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}"/> 
+                    <p:selectManyMenu value="#{PropostaController.entity.professor}" rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}" required="false" requiredMessage="Escolha um professor" converter="baseEntityConverter"  style="width:250px;" >
+                        
+                        <f:selectItems  value="#{ProfessorController.list}" var="obj" rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}" itemLabel="#{obj.nome}" itemValue="#{obj}"  />
+                    </p:selectManyMenu>
+
+                    <h:outputLabel rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}" value="Supervisors:"/> 
+                    <p:dataList   rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}" var="orientador" value="#{PropostaController.entity.professor}" type="ordered">
+                        #{orientador.nome}
+                    </p:dataList>
+
+                    <h:outputLabel rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}" value="Field of Expertise:"/> 
+                    <p:dataList rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}" var="orientador" value="#{PropostaController.entity.areaAtuacao}" type="ordered">
+                        #{orientador.nome}
+                    </p:dataList>
+
+
+                </h:panelGrid>  
+                <h:outputLabel rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}"  value="File: "/>    
+                <p:fileUpload rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}"   auto="true" 
+                              invalidSizeMessage="invalid size" sizeLimit="9999999"  required="false"  requiredMessage="Upload a file"  fileUploadListener="#{PropostaController.upFile}" />   
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="buttonInserirProp" value="Insert"  actionListener="#{PropostaController.insert}" oncomplete="inserir.hide()" rendered="#{PropostaController.entity.id == 0 || PropostaController.entity.id == null}" ajax="false">
+                    <p:tooltip for="buttonInserirProp" value="Clique aqui para Inserir a proposta no sistema" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonAtualizarProp" value="Update" actionListener="#{PropostaController.update2}" oncomplete="inserir.hide()" rendered="#{PropostaController.entity.id > 0 || PropostaController.entity.id != null}" ajax="false">
+                    <p:tooltip for="buttonAtualizarProp" value="Clique aqui para Atualizar esta proposta" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton value="Cancel" action="pretty:proposta-academico" ajax="false" immediate="true"/>
+
+            </p:dialog>        
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">
+
+            <!-- So muda o nome do Bean-->
+            <p:commandButton id="buttonNovaProp" value="new" oncomplete="inserir.show()" update=":dialog">               
+            </p:commandButton>
+            <br></br><br></br><br></br>
+
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="There are not proposals" id = "dataTable" value="#{PropostaController.byAcademico}" var="proposta"     paginator="true" rows="10"  
+                         paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="3,6">
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value="Title" /></f:facet>  
+                    <h:outputText value="#{proposta.titulo}" />  
+                </p:column>  
+                <p:column  >  
+                    <f:facet name="header"><h:outputText value="transplantation researchh" /></f:facet>  
+                    <h:outputText value="#{proposta.turma.ano}/#{proposta.turma.semestre} - #{proposta.turma.disciplina.nome}" />  
+                </p:column>  
+                <p:column  >  
+                    <f:facet name="header"><h:outputText value="Situation" /></f:facet>  
+                    <h:outputText value="#{proposta.propostaStatus.nome}" />  
+                </p:column>                                           
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Actions" /></f:facet>  
+                    <p:commandButton disabled="#{proposta.propostaStatus.nome.toLowerCase() eq 'aprovada'}" id="buttonEditProp" title="Edite essa proposta" icon="ui-icon-pencil" oncomplete="inserir.show()" update=":dialog">
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" />
+                        <p:tooltip for="buttonEditProp" value="Clique aqui para Editar esta proposta" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>                    
+                    <p:commandButton id="buttonBaixarProp" title="Baixar arquivo" rendered="#{proposta.nomeArquivo != null}" icon="ui-icon-circle-triangle-s" ajax="false">  
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" />
+                        <p:fileDownload  value="#{PropostaController.file}"  />  
+                        <p:tooltip for="buttonBaixarProp" value="Clique aqui para baixar este arquivo" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>                    
+                    <p:commandButton id="buttonVisualizarProp" title="Veja o feedback desta proposta" icon="ui-icon-search" oncomplete="feedback.show()" update=":dialog2">
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" />
+                        <p:tooltip for="buttonVisualizarProp" value="Clique aqui para Visualizar o Feedback" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                    <p:commandButton id="buttonExcluirProp" disabled="true" title="Exclua essa proposta" icon="ui-icon-trash" action="#{PropostaController.remove}" ajax="false"> 
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" />
+                        <p:tooltip for="buttonExcluirProp" value="Clique aqui para Excluir esta proposta" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>                        
+        </h:form>       
+    </ui:define>  
+</ui:composition>

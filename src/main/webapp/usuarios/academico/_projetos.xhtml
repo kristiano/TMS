@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >                            
+    
+    <ui:define name="title">
+        Project
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+
+
+        <h:form prependId="false" class="conteudo" id="dialog">
+
+            <p:dialog maximizable="true" minimizable="true" widgetVar="feedback" width="450" height="300">                        
+
+                <h:panelGrid columns="2" cellpadding="5">                                                                                               
+
+                    <h4>Log:</h4>
+                    <p:dataList value="#{ProjetoController.entity.feedBack}" var="feedback" type="ordered">
+                        #{feedback.feedback} - #{feedback.data}<br/>
+                    </p:dataList>
+
+                </h:panelGrid>                                                          
+
+                <p:commandButton value="Close" oncomplete="feedback.hide()" />
+
+            </p:dialog>                        
+
+        </h:form>
+        <h:form class="conteudo" id="dialogProjeto">
+            <p:dialog  maximizable="true" minimizable="true" widgetVar="inserir" hideEffect="fade" >                       
+
+                <h:outputLabel value="Name:" /><p/>
+                <h:outputText value="#{ProjetoController.entity.proposta.titulo}" />
+                <p/>
+                <h:outputLabel  value="File: "/>    
+                <p:fileUpload label="Choose"   invalidFileMessage="Invalid File" auto="true" 
+                               sizeLimit="9999999"  required="true"  requiredMessage="Faça upload de um arquivo"  fileUploadListener="#{ProjetoController.upFile}" />   
+
+
+                <p:commandButton value="Close" oncomplete="inserir.hide()" />
+
+            </p:dialog>
+        </h:form>
+
+
+        <h:form prependId="false" id="table" class="conteudo">
+            <p:messages autoUpdate="true" showDetail="true" />
+            <!-- So muda o nome do Bean-->
+
+            <br></br><br></br><br></br>                        
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="There are not projects" id = "dataTable" value="#{ProjetoController.byAcademico}" var="Projeto"     paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="3,6">
+                <f:facet name="header">Projects</f:facet>  
+
+
+                <p:column>  
+                    <f:facet class="titulo" name="header"><h:outputText value="Title" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.titulo}" />  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Situation" /></f:facet>  
+                    <h:outputText value="#{Projeto.projetoStatus.nome}" />  
+                </p:column>  
+
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Actions" /></f:facet>  
+                    <p:commandButton title="Download" rendered="#{Projeto.nomeArquivo != null}" icon="ui-icon-circle-triangle-s" ajax="false">  
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" />
+                        <p:fileDownload value="#{ProjetoController.file}"  />
+                    </p:commandButton>
+                    <p:commandButton id="buttonVisualizarFeed" icon="ui-icon-search" oncomplete="feedback.show()" update=":dialog" actionListener="#{ProjetoController.prepareEdit}">  
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" />
+                        <p:tooltip for="buttonVisualizarFeed" value="Clique aqui para Visualizar o FeedBack" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>     
+                    <p:commandButton id="buttonEscolher" title="choose a file" icon="ui-icon-plus" oncomplete="inserir.show()"  update=":dialogProjeto">
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" /> 
+                        <p:tooltip for="buttonEscolher" value="Clique aqui para Escolher um Arquivo" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>                        
+        </h:form>       
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+                    
+                    
+    <ui:define name="title">
+        Projetos
+    </ui:define>  
+        
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+        
+    <ui:define name="conteudo">                  
+        Projetos Coordenador
+        <h:form prependId="false" class="conteudo">
+            <p:dialog widgetVar="inserir" id="dialog" closable="false" header="Detalhes do projeto" resizable="false">                                                            
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel for="nome" value="Acadêmico: " style="font-weight: bold;"/>  
+                    <h:outputLabel id="nome"  value="#{ProjetoController.entity.proposta.academico.nome}" />                         
+
+                    <h:outputLabel for="tema" value="Tema: " style="font-weight: bold;"/>  
+                    <h:outputLabel id="tema" value="#{ProjetoController.entity.proposta.tema}" />          
+
+                    <h:outputLabel for="titulo" value="Titulo: " style="font-weight: bold;"/>  
+                    <h:outputLabel id="titulo" value="#{ProjetoController.entity.proposta.titulo}" />      
+
+                    <h:outputLabel for="turma" value="Turma: " style="font-weight: bold;"/>  
+                    <h:outputLabel id="turma" value="#{ProjetoController.entity.proposta.turma.ano} - #{ProjetoController.entity.proposta.turma.semestre} / #{ProjetoController.entity.proposta.turma.disciplina.nome}" />    
+
+                    Baixar projeto (em construção)
+
+                </h:panelGrid>  
+
+
+                <p:commandButton value="Fechar" onclick="inserir.hide()" type="button"/>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <!-- So muda o nome do Bean-->                        
+            <br></br><br></br><br></br>                        
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não há projetos cadastradas"  value="#{ProjetoController.byCoordenador}" var="Projeto" paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10">
+                <f:facet name="header">Projetos do Coordenador</f:facet>
+
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Tema" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.tema}" />  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Titulo" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.titulo}" />  
+                </p:column>  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Status" /></f:facet>  
+                    <h:outputText value="#{Projeto.projetoStatus.nome}" />  
+                </p:column>                                  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Turma" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.turma.codigoTurma}" />  
+                </p:column>                                  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="detalharPro" value="Detalhar" oncomplete="inserir.show()"  update=":dialog">
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" /> 
+                        <p:tooltip for="detalharPro" value="Clique aqui para Visualizar os detalhes" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                    <p:commandButton id="excluirProj" value="Excluir" action="#{ProjetoController.remove}" update=":table"> 
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" /> 
+                        <p:tooltip for="excluirProj" value="Clique aqui para Excluir os dados" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>                                                                                                        
+                </p:column>
+            </p:dataTable>                        
+        </h:form>       
+    </ui:define>
+</ui:composition>

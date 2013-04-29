@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Transplantation Unit
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog  header="New Transplantation Unit" modal="false" showEffect="fade" hideEffect="fade"  widgetVar="inserir" resizable="false" closable="false">    
+
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel  value="Code"/>                                                           
+                    <p:inputText  title="Ex: 422332BBC" required="true" requiredMessage="enter a code" value="#{CursoController.entity.codigo}" />                       
+
+                    <h:outputLabel  value="Name "/>  
+                    <p:inputText title="Exemplo: Ciência da Computação" required="true" requiredMessage="enter a name" id="codigo" maxlength="100"   value="#{CursoController.entity.nome}" />
+
+                    <h:outputLabel  value="Budget"/>                                                    
+                    <p:inputText   required="true" requiredMessage="enter a budget" value="#{CursoController.entity.totalHoras}" />   
+
+                </h:panelGrid>  
+
+                <p:commandButton id="buttonInserir" value="Insert" actionListener="#{CursoController.insert}" oncomplete="inserir.hide()" rendered="#{CursoController.isNew}" update=":table">
+                    <p:tooltip for="buttonInserir" value="Clique aqui para Inserir o curso" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonAtualizar" value="Update" actionListener="#{CursoController.update}" oncomplete="inserir.hide()" rendered="#{CursoController.isEdit}" update=":table">
+                    <p:tooltip for="buttonAtualizar" value="Clique aqui para Atualizar o Curso" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonCancelar" value="Cancel" onclick="inserir.hide()" type="button"/>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo" >
+
+            <p:messages autoUpdate="true"  showDetail="true"/>
+            <p:commandButton id="buttonNovo" value="New Transplantation Unit" oncomplete="inserir.show()" actionListener="#{CursoController.prepareNew()}" update=":dialog">
+                <p:tooltip for="buttonNovo" value="Clique aqui para adicionar um novo Curso ao Sistema" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton> 
+            <br></br><br></br><br></br>                        
+
+            <p:dataTable  id = "dataTable" value="#{CursoController.list}" var="curso"     paginator="true" rows="10"  
+                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                          rowsPerPageTemplate="5,10,15">       
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" Code" /></f:facet>  
+                    <h:outputText value="#{curso.codigo}" />  
+                </p:column>  
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" Name" /></f:facet>  
+                    <h:outputText value="#{curso.nome}" />  
+                </p:column>  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" Budget" /></f:facet>  
+                    <h:outputText value="#{curso.totalHoras}" />  
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Actions" /></f:facet>  
+                    <div id="acao">
+                        <p:commandButton id="buttonEdit" icon="ui-icon-pencil" oncomplete="inserir.show()" actionListener="#{CursoController.prepareEdit}" update=":dialog">
+                            <f:setPropertyActionListener value="#{curso}" target="#{CursoController.entity}" /> 
+                            <p:tooltip for="buttonEdit" value="Clique aqui para Editar este Curso" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="buttonExcluir" icon="ui-icon-trash" onclick="confirmation.show()"> 
+                            <f:setPropertyActionListener value="#{curso}" target="#{CursoController.entity}" />
+                            <p:tooltip for="buttonExcluir" value="Clique aqui para Excluir este Curso" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>    
+
+            <p:dialog id="confirmDialog" header="Do you really wanna remove this Transplantation Unit?" 
+                      widgetVar="confirmation" closable="false">  
+
+                <p:commandButton id="confirm" value="Yes" action="#{CursoController.remove}" process="@form" update=":table" oncomplete="confirmation.hide()"  
+                                 />  
+                <p:commandButton id="decline" value="No" onclick="confirmation.hide()" type="button" />   
+
+            </p:dialog>  
+            * If the course is linked to some discipline, it can not be removed.
+        </h:form> 
+
+
+    </ui:define>
+</ui:composition>

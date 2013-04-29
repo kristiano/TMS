@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">                       
+
+
+    <ui:define name="title">
+        Doctor - Home
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="/usuarios/professor/menu.xhtml"/> 
+    </ui:define>  
+
+    <ui:define name="conteudo">            
+        <div class="conteudo">
+            <div>
+                <b>Nome do Sistema:</b> SIGD (Sistema de Gerenciamento de Projetos de Graduação).<br/><br/>
+                <b>Versão:</b> beta 1</div><br/>
+            <b>Sobre</b> Primordialmente, é importante ressaltar que o objetivo do trabalho realizado em parceria com o professor Patrick Letouze é criar uma plataforma web 2.0 que facilite não só o gerenciamento de projetos de graduação bem como a gerencia de disciplinas como metodologia cientifica. Inicialmente no que tange as instancias da UFT para que depois se atinja outras regiões até que se alcance nível Brasil por completo, sendo essa a meta deste sistema.<br/>
+            <p><h3>Meus dados</h3></p>
+            <b>Matrícula:</b> #{ProfessorController.professorLogado.matricula}<br/><br/>
+            <b>Quantidade de orientandos:</b> #{ProfessorController.professorLogado.quantidadeOrientando} <br/><br/>
+                  
+            <br/>
+            <b>Transplantation Units:</b> 
+            <p>
+                <ui:repeat value="#{ProfessorController.buscarListaCursoProfessorLogado()}" var="curso">
+                    #{curso.nome} <br/>
+                </ui:repeat>
+            </p>                  
+            <br/>                
+        </div>
+    </ui:define>           
+</ui:composition>
+

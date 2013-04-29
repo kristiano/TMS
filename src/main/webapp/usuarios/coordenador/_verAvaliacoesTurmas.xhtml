@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"> 
+
+    <ui:define name="title">
+        Grade - Banca
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>      
+
+    <ui:define name="conteudo">                      
+        <h:body>           
+            <p:messages/>        
+            <p:panel rendered="#{TurmaController.byCoordenador.size() > 0}"> 
+                <h:outputLabel value="Transplantation Research: "/><br/>            
+                <h:form>
+                    <h:selectOneMenu value="#{TurmaController.auxTurma}" converter="baseEntityConverter" required="true">
+                        <f:selectItem itemLabel="Selecione ..." itemDisabled="true" />  
+                        <f:selectItems value="#{TurmaController.byCoordenador}" var="turma" itemLabel="#{turma.disciplina.nome} - #{turma.ano}/#{turma.semestre}" itemValue="#{turma}" />                  
+                    </h:selectOneMenu> 
+                    <p:commandButton action="#{AvaliacaoTurmaController.calcularMediaEVariancia(TurmaController.auxTurma.id)}" actionListener="#{AvaliacaoCapituloController.criarLinhaDoTempo(TurmaController.auxTurma.id)}" ajax="false" value="Choose"/>
+                </h:form>   
+            </p:panel> 
+            <p:panel rendered="#{TurmaController.byCoordenador.size() == 0}">
+                <h4>Não existem turmas para ver avaliações.</h4>
+            </p:panel>
+            <h:form class="conteudo">
+                <h:panelGroup id="teste" rendered="#{AvaliacaoTurmaController.auxMedia != null}" >
+                    <h:outputText value="Transplantation Research selected: " style="font-weight: bold;"/>
+                    <h:outputText value="#{TurmaController.auxTurma.disciplina.nome} - #{TurmaController.auxTurma.ano}/#{TurmaController.auxTurma.semestre}"/> <br/>
+
+                    <br/>
+                    <h:panelGroup rendered="#{AvaliacaoTurmaController.carregarAvaliadosByTurma(TurmaController.auxTurma.id).size() > 0}" >
+                        <h:outputText value="Average: " style="font-weight: bold;"/>
+                        <h:outputText value="#{AvaliacaoTurmaController.auxMedia}">
+                            <f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="" />     
+                        </h:outputText>
+                        <br/>  
+
+                        <h:outputText value="Variance: " style="font-weight: bold;"/>
+                        <h:outputText value="#{AvaliacaoTurmaController.auxVariancia}">    
+                            <f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="" />     
+                        </h:outputText><br/> 
+
+                        <h:outputText value="Quantity of evaluation: " style="font-weight: bold;"/>
+                        <h:outputText value="#{AvaliacaoTurmaController.carregarAvaliadosByTurma(TurmaController.auxTurma.id).size()}"/> <br/> 
+                    </h:panelGroup>
+
+                    <h:outputText value="Esta turma ainda não foi avaliada por nenhum aluno. " style="font-weight: bold;" rendered="#{AvaliacaoTurmaController.carregarAvaliadosByTurma(TurmaController.auxTurma.id).size() == 0}"/>
+
+                </h:panelGroup>   
+            </h:form>
+            
+        </h:body>
+    </ui:define>
+</ui:composition>

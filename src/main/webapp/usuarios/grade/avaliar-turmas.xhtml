@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"> 
+
+    <ui:define name="title">
+        Grade - Transplantation units
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="/usuarios/academico/menu.xhtml" />
+    </ui:define>      
+
+    <ui:define name="conteudo">                      
+        <h:body>           
+            <p:messages/>        
+            <p:panel rendered="#{AvaliacaoTurmaController.carregarDisponivelAcademico(AcademicoController.loggedAcademico.id).size() > 0}"> 
+                <h:outputLabel value="Transplantation research: "/><br/>            
+                <h:outputLabel value="select one transplantation research available to evaluating." />    
+                <h:form>
+                    <h:selectOneMenu value="#{AvaliacaoTurmaController.auxAvaliacaoTurma}" converter="baseEntityConverter" required="true">
+                        <f:selectItem itemLabel="select ..." itemDisabled="true" />  
+                        <f:selectItems value="#{AvaliacaoTurmaController.carregarDisponivelAcademico(AcademicoController.loggedAcademico.id)}" var="avaliacao" itemLabel="#{avaliacao.turma.disciplina.nome} - #{avaliacao.turma.ano}/#{avaliacao.turma.semestre}" itemValue="#{avaliacao}" />                  
+                    </h:selectOneMenu> 
+                    <p:commandButton action="#{AvaliacaoTurmaController.carregarAvaliaçãoPorId()}" ajax="false" value="choose transplantation research"/>
+                </h:form>   
+            </p:panel> 
+            <p:panel rendered="#{AvaliacaoTurmaController.carregarDisponivelAcademico(AcademicoController.loggedAcademico.id).size() == 0}">
+                <h4>There are not Transplantation research to be evaluated</h4>
+            </p:panel>
+            <h:form class="conteudo">
+                <h:panelGroup id="teste" rendered="#{AvaliacaoTurmaController.entity.id != null}" >
+                    <h:outputText value="selected research project" style="font-weight: bold;"/>
+                    <h:outputText value="#{AvaliacaoTurmaController.entity.turma.disciplina.nome} - #{AvaliacaoTurmaController.entity.turma.ano}/#{AvaliacaoTurmaController.entity.turma.semestre}"/> <br/>
+
+                    <h:outputText value="Grade: " style="font-weight: bold;"/>
+                    <h:inputText value="#{AvaliacaoTurmaController.entity.nota}"/> <br/>               
+
+                    <p:commandButton actionListener="#{AvaliacaoTurmaController.update()}" ajax="false" value="Evaluate"/>
+                </h:panelGroup>   
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>

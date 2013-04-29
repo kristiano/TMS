@@ -1,0 +1,221 @@
+/* css da página */
+
+#page{
+    width: 1000px;
+    margin: 0 auto;
+    font-family: 'PT Sans', sans-serif;    
+}
+
+#cabecalho {
+    width: 100%;
+    border: 1px solid #006600;    
+    margin-top: -10px;
+    height: 30px;   
+    display:inline-block;
+}
+
+#logo {
+    width: 100%;
+    border: 1px solid #006600;
+    border-top: none;    
+    height: 150px;      
+    margin-top: -5px; 
+}
+
+#centro {
+    border-left: 1px solid #006600;          
+    width: 100%;
+    display:inline-block;
+}
+
+#menu-geral {
+    width: 20%;
+    min-height: 230px;
+    height: auto;        
+    display:inline-block;
+    float: left;          
+}
+
+#conteudo{
+    float: right;
+    min-height: 230px;    
+    width: 79%;
+    margin-right: -1px;
+    border-right: 1px solid #006600;    
+    border-left: 1px solid #006600;
+    display:inline-block;
+    height: auto;
+}
+
+.conteudo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#rodape {
+    width: 100%;
+    border: 1px solid #006600;    
+    clear: both;    
+    background: #f4f4f4;
+    font-size: 13px;
+    height: 25px;
+    margin-top: -5px;
+}
+
+/* menu */
+
+
+#menu ul {
+    padding:0px;
+    margin:0px;
+    float: left;                
+}
+
+#menu ul li { display: inline; }
+
+#menu ul li a {
+    padding: 2px 10px;
+    float:left;       
+    color: #333;
+    text-decoration: none;    
+    height: 26px;     
+}
+
+#menu ul li a:hover {            
+    background: #e6f4e9;
+}
+
+#nav {
+    position:relative;
+    width:1000px;
+    margin:0 auto;                    
+    float: left;
+}
+
+ul#navigation {
+    margin:0px auto;
+    margin-left: -40px;        
+    position:relative;
+    float:left;	
+}
+
+ul#navigation li {    
+    display:inline;
+    font-size:10px;    
+    margin:0;
+    padding:0;
+    float:left;
+    position:relative;    
+}
+
+ul#navigation li a {
+    padding:10px 20px;
+    color:black;    
+    text-decoration:none;
+    display:inline-block;	
+    background: white;   
+
+
+    -webkit-transition:color 0.2s linear, background 0.2s linear;	
+    -moz-transition:color 0.2s linear, background 0.2s linear;	
+    -o-transition:color 0.2s linear, background 0.2s linear;	
+    transition:color 0.2s linear, background 0.2s linear;	
+}
+
+ul#navigation li a:hover {
+    background:white;
+    color:#282828;
+}
+
+ul#navigation li:hover > a {
+    background:#CCCCCC;;
+}
+
+/* Drop-Down Navigation */
+ul#navigation li:hover > ul
+{
+    visibility:visible;
+    opacity:1;
+}
+
+ul#navigation ul, ul#navigation ul li ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;    
+    visibility:hidden;
+    position: absolute;
+    z-index: 99999;
+    width:200px;
+    background:white;
+    box-shadow:1px 1px 3px #ccc;
+    opacity:0;
+    -webkit-transition:opacity 0.2s linear, visibility 0.2s linear; 
+    -moz-transition:opacity 0.2s linear, visibility 0.2s linear; 
+    -o-transition:opacity 0.2s linear, visibility 0.2s linear; 
+    transition:opacity 0.2s linear, visibility 0.2s linear; 	
+}
+
+ul#navigation ul {
+    top: 34px;
+    left: 1px;    
+}
+
+ul#navigation ul li ul {
+    top: 0;    
+}
+
+ul#navigation ul li {
+    clear:both;
+    width:100%;
+    border:0 none;
+    border-bottom:1px solid #CCCCCC;
+}
+
+ul#navigation ul li a {
+    background:none;
+    padding:7px 15px;
+    color:#616161;
+    text-shadow:1px 1px 0px #fff;
+    text-decoration:none;
+    display:inline-block;
+    border:0 none;
+    float:left;
+    clear:both;
+    width:170px;
+}
+
+ul#navigation li a.first {
+    border-left: 0 none;
+}
+
+ul#navigation li a.last {
+    border-right: 0 none;
+}
+
+.link-menu {
+    width: 190px;
+}
+
+/* login */
+
+#conteudo-login{
+    float: right;
+    min-height: 230px;    
+    width: 100%;
+    margin-right: -1px;
+    border-right: 1px solid #006600;    
+    border-left: 1px solid #006600;
+    display:inline-block;
+    height: auto;
+}
+
+#logo-login {
+    width: 100%;
+    border: 1px solid #006600;
+    border-top: none;    
+    height: 150px;      
+    margin-top: -10px; 
+    background: #f4f4f4;
+}

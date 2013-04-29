@@ -1,0 +1,337 @@
+
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.2" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.2
+                                   		http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.2.xsd">
+           
+    <!-- área do acadêmico -->
+
+    <url-mapping id="academico"> 
+        <pattern value="/area-academico" /> 
+        <view-id value="/usuarios/academico/index.xhtml" />
+    </url-mapping>        
+      
+    <url-mapping id="capitulos-academico" parentId="academico">
+        <pattern value="/capitulos" /> 
+        <view-id value="/usuarios/academico/_capitulos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="listar-academico" parentId="userfeedback-academico">
+        <pattern value="/listar" /> 
+        <view-id value="/usuarios/academico/_listar.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="perfil-academico" parentId="academico">
+        <pattern value="/perfil" /> 
+        <view-id value="/usuarios/academico/_perfil.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="projeto-academico" parentId="academico">
+        <pattern value="/projetos" /> 
+        <view-id value="/usuarios/academico/_projetos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="userfeedback-academico" parentId="academico">
+        <pattern value="/userFeedback" /> 
+        <view-id value="/usuarios/academico/_userfeedback2.xhtml" />
+    </url-mapping>
+    
+    <!-- fim área academico -->
+    
+    <!-- área do administrador -->
+    
+    <url-mapping id="administrador"> 
+        <pattern value="/area-administrador" /> 
+        <view-id value="/usuarios/administrador/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="curso-administrador" parentId="administrador">
+        <pattern value="/cursos" /> 
+        <view-id value="/usuarios/administrador/_cursos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="disciplina-administrador" parentId="administrador">
+        <pattern value="/disciplinas" /> 
+        <view-id value="/usuarios/administrador/_disciplina.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="nova-situacao-administrador" parentId="user-feedback-administrador">
+        <pattern value="/nova-situacao" /> 
+        <view-id value="/usuarios/administrador/_novasituacao.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="pro-associado-administrador" parentId="user-feedback-administrador">
+        <pattern value="/prob-associado-administrador" /> 
+        <view-id value="/usuarios/administrador/_nprobassociado.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="responder-administrador" parentId="user-feedback-administrador">
+        <pattern value="/responder" /> 
+        <view-id value="/usuarios/administrador/_responder.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="editar-feed-back-administrador" parentId="user-feedback-administrador">
+        <pattern value="/editar-feedback" /> 
+        <view-id value="/usuarios/administrador/_editarFeedback.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="user-feedback-administrador" parentId="administrador">
+        <pattern value="/user-feedback" /> 
+        <view-id value="/usuarios/administrador/_userfeedback.xhtml" />
+    </url-mapping> 
+    
+    <url-mapping id="perfil-administrador" parentId="administrador">
+        <pattern value="/perfil" /> 
+        <view-id value="/usuarios/administrador/_perfil.xhtml" />
+    </url-mapping>
+
+    <url-mapping id="professores-administrador" parentId="administrador">
+        <pattern value="/professores" /> 
+        <view-id value="/usuarios/administrador/_professor.xhtml" />
+    </url-mapping>
+            
+    <url-mapping id="turmas-administrador" parentId="administrador">
+        <pattern value="/turmas" /> 
+        <view-id value="/usuarios/administrador/_turma.xhtml" />
+    </url-mapping>       
+    
+    <url-mapping id="ver-avaliacoesDisciplina" parentId="administrador"> 
+        <pattern value="/ver-avaliacoes-disciplina" /> 
+        <view-id value="/usuarios/administrador/_verAvaliacoesDisciplinas.xhtml" />
+    </url-mapping>                
+     
+    <!-- fim area admin -->               
+
+
+    <url-mapping id="banca-grade-professor" parentId="professor">
+        <pattern value="/banca-grade" /> 
+        <view-id value="/usuarios/grade/grade-banca.xhtml" />
+    </url-mapping> 
+    
+    <!-- area coordenador -->
+    
+    <!-- area grade-coordeandor -->
+    <url-mapping id="grade-coordenador" parentId="coordenador"> 
+        <pattern value="/grade" /> 
+        <view-id value="/usuarios/coordenador/grade/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="ver-avaliacoesTurma" parentId="coordenador"> 
+        <pattern value="/ver-avaliacoes-turma" /> 
+        <view-id value="/usuarios/coordenador/_verAvaliacoesTurmas.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="banca-grade-coordenador" parentId="grade-coordenador">
+        <pattern value="/banca-grade" /> 
+        <view-id value="/usuarios/coordenador/grade/grade-banca.xhtml" />
+    </url-mapping> 
+    
+    <url-mapping id="linha-grade-coordenador" parentId="grade-coordenador">
+        <pattern value="/turma-grade" /> 
+        <view-id value="/usuarios/coordenador/grade/grade-turma.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="linhadotempo-grade-coordenador" parentId="grade-coordenador">
+        <pattern value="/linhadotempo-grade" /> 
+        <view-id value="/usuarios/coordenador/grade/linha-do-tempo.xhtml" />
+    </url-mapping>
+    <!-- fim area grade-coordenador -->
+    
+    <url-mapping id="coordenador"> 
+        <pattern value="/area-coordenador" /> 
+        <view-id value="/usuarios/coordenador/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="academico-coordenador" parentId="coordenador">
+        <pattern value="/academicos" /> 
+        <view-id value="/usuarios/coordenador/_academico.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="academicos-turma-coordenador" parentId="coordenador">
+        <pattern value="/academicos-turma" /> 
+        <view-id value="/usuarios/coordenador/_academicosTurma.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="area-atuacao-coordenador" parentId="coordenador">
+        <pattern value="/area-atuacao" /> 
+        <view-id value="/usuarios/coordenador/_areaatuacao.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="banca-coordenador" parentId="coordenador">
+        <pattern value="/banca" /> 
+        <view-id value="/usuarios/coordenador/_banca.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="capitulos-coordenador" parentId="coordenador">
+        <pattern value="/capitulos" /> 
+        <view-id value="/usuarios/coordenador/_capitulos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="editar-feed-back-coordenador" parentId="coordenador">
+        <pattern value="/editar-feedback" /> 
+        <view-id value="/usuarios/coordenador/_editarFeedback.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="encaminha-responde-coordenador" parentId="coordenador">
+        <pattern value="/encaminha-resposta" /> 
+        <view-id value="/usuarios/coordenador/_encaminhaResponde.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="listar-coordenador" parentId="coordenador">
+        <pattern value="/listar" /> 
+        <view-id value="/usuarios/coordenador/_listar.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="meus-capitulos-coordenador" parentId="coordenador">
+        <pattern value="/meus-capitulos" /> 
+        <view-id value="/usuarios/coordenador/_meusCapitulos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="projetos-coordenador" parentId="coordenador">
+        <pattern value="/projetos" /> 
+        <view-id value="/usuarios/coordenador/_projetos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="meus-projetos-coordenador" parentId="coordenador">
+        <pattern value="/meus-projetos" /> 
+        <view-id value="/usuarios/coordenador/_meusprojetos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="meus-capitulos-coordenador" parentId="coordenador">
+        <pattern value="/meus-capitulos-propostas" /> 
+        <view-id value="/usuarios/coordenador/_meusCapitulos.xhtml" />
+    </url-mapping>    
+    
+    <url-mapping id="responder-coordenador" parentId="coordenador">
+        <pattern value="/responder" /> 
+        <view-id value="/usuarios/coordenador/_responder.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="turmas-coordenador" parentId="coordenador">
+        <pattern value="/turmas" /> 
+        <view-id value="/usuarios/coordenador/_turma.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="perfil-coordenador" parentId="coordenador">
+        <pattern value="/perfil" /> 
+        <view-id value="/usuarios/coordenador/_perfil.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="professores-coordenador" parentId="coordenador">
+        <pattern value="/professores" /> 
+        <view-id value="/usuarios/coordenador/_professor.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="user-feedback-coordenador" parentId="coordenador">
+        <pattern value="/user-feedback" /> 
+        <view-id value="/usuarios/coordenador/_userfeedback.xhtml" />
+    </url-mapping>
+    <!-- fim coordenador -->
+    
+    <!-- grade -->
+    <url-mapping id="grade"> 
+        <pattern value="/area-grade/" /> 
+        <view-id value="/usuarios/grade/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="minha-banca-grade" parentId="grade">
+        <pattern value="/minha-banca-grade" /> 
+        <view-id value="/usuarios/grade/minha-banca.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="avaliar-turmas-grade" parentId="academico">
+        <pattern value="/avaliar-turmas-grade" /> 
+        <view-id value="/usuarios/grade/avaliar-turmas.xhtml" />
+    </url-mapping>
+    <!-- fim grade -->
+    
+    <!-- area professor -->
+    <url-mapping id="professor"> 
+        <pattern value="/area-professor" /> 
+        <view-id value="/usuarios/professor/index.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="area-atuacao-professor" parentId="professor">
+        <pattern value="/area-atuacao-professor" /> 
+        <view-id value="/usuarios/professor/_areaatuacao.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="capitulos-professor" parentId="professor">
+        <pattern value="/capitulos-professor" /> 
+        <view-id value="/usuarios/professor/_capitulos.xhtml" />
+    </url-mapping>
+    
+    <url-mapping id="listar-professor" parentId="professor">
+        <pattern value="/listar-professor" /> 
+        <view-id value="/usuarios/professor/_listar.xhtml" />
+    </url-mapping>    
+     
+    <url-mapping id="perfil-professor" parentId="professor">
+        <pattern value="/perfil-professor" /> 
+        <view-id value="/usuarios/professor/_perfil.xhtml" />
+    </url-mapping>
+     
+    <url-mapping id="projetos-professor" parentId="professor">
+        <pattern value="/projetos-professor" /> 
+        <view-id value="/usuarios/professor/_projetos.xhtml" />
+    </url-mapping>    
+     
+    <url-mapping id="responder-professor" parentId="professor">
+        <pattern value="/responder-professor" /> 
+        <view-id value="/usuarios/professor/_responder.xhtml" />
+    </url-mapping>
+     
+    <url-mapping id="user-feedback-professor" parentId="professor">
+        <pattern value="/user-feedback-professor" /> 
+        <view-id value="/usuarios/professor/_userfeedback.xhtml" />
+    </url-mapping>
+    <!-- fim professor -->
+                        
+    <!-- outros -->                               
+    <url-mapping id="login"> 
+        <pattern value="/login" /> 
+        <view-id value="/login.xhtml" />
+    </url-mapping> 
+    
+    <url-mapping id="sucesso"> 
+        <pattern value="/sucesso" /> 
+        <view-id value="/sucesso.xhtml" />
+    </url-mapping> 
+                
+    <url-mapping id="request_password"> 
+        <pattern value="/password/request-reset" /> 
+        <view-id value="/request_recover.xhtml" />
+    </url-mapping>
+      
+    <url-mapping id="erro"> 
+        <pattern value="/error" /> 
+        <view-id value="/erro.xhtml" />
+    </url-mapping>             
+      
+    <url-mapping id="coordenador"> 
+        <pattern value="/coordenacao/" /> 
+        <view-id value="/usuarios/coordenador/index.xhtml" />          
+    </url-mapping>
+      
+    <url-mapping id="professor"> 
+        <pattern value="/area-professor/" /> 
+        <view-id value="/usuarios/professor/index.xhtml" />
+    </url-mapping>
+      
+    <url-mapping id="administrator"> 
+        <pattern value="/administracao/" /> 
+        <view-id value="/usuarios/administrador/index.xhtml" />
+    </url-mapping>
+      
+    <url-mapping id="academico"> 
+        <pattern value="/area-academico/" /> 
+        <view-id value="/usuarios/academico/index.xhtml" />
+    </url-mapping>
+      
+    <url-mapping id="alterarSenha"> 
+        <pattern value="/alterarSenha" /> 
+        <view-id value="/alterarSenha.xhtml" />
+    </url-mapping>     
+      
+
+</pretty-config>

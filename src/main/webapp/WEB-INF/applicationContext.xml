@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+ 
+    <!-- data source -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://192.168.240.8/tms" />
+        <property name="username" value="postgres" />
+        <property name="password" value="123456" />      
+    </bean>
+    
+    <bean id="SucessAuthenticationHandler" class="br.com.sigd.util.SucessAuthenticationHandler"/>
+     
+    <sec:http auto-config="true" access-denied-page="/negado.xhtml">
+        
+        <sec:form-login login-page="/login.xhtml" authentication-failure-url="/negado.xhtml" authentication-success-handler-ref="SucessAuthenticationHandler" />
+        <sec:logout invalidate-session="true" delete-cookies="JSESSIONID"/> 
+
+        <sec:intercept-url pattern="/administracao/*" access="ROLE_ADMINISTRADOR" />
+        <sec:intercept-url pattern="/coordenacao/*" access="ROLE_COORDENADOR" />
+        <sec:intercept-url pattern="/area-professor/*" access="ROLE_PROFESSOR" />
+        <sec:intercept-url pattern="/area-academico/*" access="ROLE_ACADEMICO" />
+        
+    </sec:http>
+        
+    
+    <sec:authentication-manager>
+        <sec:authentication-provider>
+            <sec:password-encoder hash="md5"/>
+            <!--    - nome do datasource do web.xml
+            - pesquisa que deve retornar nome do usuario, password, e se é ativo
+            - pesquisa que deve retornar nome do usuario e autoridade
+            - prefixo usado no ROLE padrão da aplicação web, permissões devem seguir a pattern PREFIXO-ROLE_NOME-ROLE -->
+            <sec:jdbc-user-service role-prefix="ROLE_"
+                                   authorities-by-username-query="SELECT username, permissao FROM usuario WHERE username=?"
+                                   users-by-username-query="SELECT username, password, 'true' as enabled FROM usuario WHERE username=?"
+                                   data-source-ref="dataSource"/>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+    
+
+ 
+</beans>

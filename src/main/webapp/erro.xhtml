@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <title>TMS</title>
+            <link type="text/css" rel="stylesheet" href="#{pageContext.request.contextPath}/sigd/css/style.css" />
+            <script type="text/javascript" src="#{pageContext.request.contextPath}/sigd/resources/js/boxOver.js"></script>
+        </h:head>
+        <h:body>  
+            <div id="main_container">                
+                <div id="header">                    
+                    <div class="big_banner_left">                                           
+                        <img src="#{pageContext.request.contextPath}/sigd/imagens/sigd.png" /> 
+                    </div>                                          
+                    <div class="big_banner_right">                              
+                        <img src="#{pageContext.request.contextPath}/sigd/imagens/uft.png" />                                                    
+                    </div>
+                </div>
+                
+                 <div id="barra">
+                        
+                   </div>
+
+                <div id="main_content">                     
+                    <center>
+                        Error, acesso negado! Voltar ao <h:link outcome="pretty:request_password">login</h:link>.
+                                                             
+                    </center>
+                </div>
+
+                <div class="footer">      
+                    <img src="#{pageContext.request.contextPath}/sigd/imagens/rodape.png" /> 
+             </div>     
+            </div>                             
+        </h:body>  
+    </f:view>
+</html>

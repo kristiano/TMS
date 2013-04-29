@@ -1,0 +1,99 @@
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Propostas
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">   
+        <h:form prependId="false" class="conteudo" id="dialog">
+
+            <p:dialog widgetVar="feedback" width="500" height="300">                        
+
+                <h:panelGrid columns="2" cellpadding="5">                                                                
+
+                    <h:outputText  value="Status: " />
+                    <h:selectOneMenu disabled="#{PropostaController.entity.propostaStatus.nome eq 'Aprovada'}" value="#{PropostaController.entity.propostaStatus}" converter="baseEntityConverter">
+                        <f:selectItems value="#{PropostaStatusController.list}" var="propostastatus" itemLabel="#{propostastatus.nome}" itemValue="#{propostastatus}" />                                                                                        
+                    </h:selectOneMenu>      
+
+                    <h:outputLabel  value="Feedback:"/>  
+                    <p:inputTextarea value="#{PropostaController.feedBack}" style="width: 300px" autoResize="no"/>                                 
+
+                    <h4>Log:</h4>
+                    <p:dataList value="#{PropostaController.entity.feedBack}" var="feedback" type="ordered">
+                        #{feedback.feedback} - #{feedback.data}<br/>
+                    </p:dataList>
+
+                </h:panelGrid>                                                          
+
+                <p:commandButton id="atualizarProp" value="Atualizar" actionListener="#{PropostaController.update()}" oncomplete="feedback.hide()" >
+                    <p:tooltip for="atualizarProp" value="Clique aqui para Atualizar os dados" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+
+            </p:dialog>
+        </h:form>
+        Propostas<br/><br/>
+        <h:form prependId="false" id="table" class="conteudo">     
+            <p:messages autoUpdate="true" showDetail="true"/>
+
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não há proposta cadastradas"   value="#{PropostaController.byProfessor}" var="proposta" paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10">
+
+                <f:facet name="header">Lista de Propostas</f:facet> 
+
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" Titulo" /></f:facet>  
+                    <h:outputText value="#{proposta.titulo}" />  
+                </p:column>  
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Tema" /></f:facet>  
+                    <h:outputText value="#{proposta.tema}" />  
+                </p:column> 
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Acadêmico" /></f:facet>  
+                    <h:outputText value="#{proposta.academico.nome}" />  
+                </p:column> 
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Situação" /></f:facet>  
+                    <h:outputText value="#{proposta.propostaStatus.nome}" />  
+                </p:column>  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="feedbackProposta" value="Feedback" oncomplete="feedback.show()" actionListener="#{PropostaController.prepareEdit}" update=":dialog">
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" /> 
+                        <p:tooltip for="feedbackProposta" value="Clique aqui para Visualizar o feedback" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                    <p:commandButton value="Download" ajax="false" rendered="#{proposta.nomeArquivo != null}">  
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" />
+                        <p:fileDownload  value="#{PropostaController.file}"  />  
+                    </p:commandButton>                                    
+                    <p:commandButton id="excluirProposta" value="Excluir" action="#{PropostaController.remove}" update=":table"> 
+                        <f:setPropertyActionListener value="#{proposta}" target="#{PropostaController.entity}" /> 
+                        <p:tooltip for="excluirProposta" value="Clique aqui para Exluir estes dados" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>                                    
+
+                </p:column>
+            </p:dataTable>                        
+        </h:form>      
+    </ui:define>
+</ui:composition>

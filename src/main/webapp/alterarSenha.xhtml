@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>TSM </title>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="/validar.js"></script>
+
+    </h:head> 
+    <h:form id="alterarForm">
+        <p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+        <p:panel id="panel" header="Change Password" >
+
+            <h:outputText value="New Password:" /><br/>
+            <p:password  id="senha" level="2"  minLength="6"  promptLabel="enter new password"  value="#{UsuarioController.password}" /> <br/>
+            <h:outputText value="confirm password:" /><br/>
+            <p:password  id="confirmar"  required="true" requiredMessage="confirm your password" promptLabel="rewrite the new password"  value="#{UsuarioController.confirmarPassword}" /> <br/>
+            <p:commandButton  update="panel" action="#{UsuarioController.changePassword}" value="ok" />            
+
+        </p:panel>
+    </h:form>
+
+</html>

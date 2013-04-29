@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        List
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+        <h:form prependId="false" class="conteudo" id="dialog" >                          
+            <p:dataTable emptyMessage="There are not records." value="#{UserFeedbackController.byUsuarioLogado}" var="feedback" resizableColumns="true">
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{feedback.id}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situation" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problem Associate" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value="Request Date" /></f:facet>  
+                    <h:outputText value="#{feedback.dataSolicitacao}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Status" /></f:facet>  
+                    <h:outputText value="#{feedback.status}" />  
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Actions" /></f:facet>  
+                    <p:commandButton id="buttonVisualizarInf" alt="Visualise informações" value="Open" oncomplete="visualizar.show()" update=":dialog">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.mostrar}" /> 
+                        <p:tooltip for="buttonVisualizarInf" value="Click here to visualize informations about feedback" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog widgetVar="visualizar" closable="true">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel value="Situation " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.situacoes.nome}" />
+                    <h:outputLabel value="Problem Associate: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.problemasAssociados.nome}" />
+                    <h:outputLabel value="Version: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.turma.ano} / #{UserFeedbackController.mostrar.turma.semestre} - #{UserFeedbackController.mostrar.turma.disciplina.nome}" />
+                    <h:outputLabel value="Description: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.descricao}" />
+                    <h:outputLabel value="Request Date: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataSolicitacao}" />
+                    <h:outputLabel value="Routing Date: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataEncaminhamento}" />
+                    <h:outputLabel value="Answer Date: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataResposta}" />
+                    <h:outputLabel value="Status: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.status}" />
+                    <h:outputLabel value="Answer: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.entity.resposta}" />
+                </h:panelGrid>
+            </p:dialog>                                              
+        </h:form>       
+    </ui:define>
+</ui:composition>

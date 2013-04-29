@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>TMS</title>        
+    </h:head>
+    <body>
+        <!-- comentário inútil -->
+        <h:form id="avisoSucesso">
+            <p:panel header="TSM says:" >
+                <h:outputText value="Your passowrd was changed sucessfully" /><br/><br/>
+                <p:commandButton value="back to system" action="#{UsuarioController.goToLogin}" />
+            </p:panel>
+        </h:form>
+    </body>
+</html>

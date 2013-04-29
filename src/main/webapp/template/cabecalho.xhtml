@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:sec="http://www.springframework.org/security/tags">                       
+    <h:body>        
+        <nav id="menu">
+            <ul>
+                <sec:authorize ifAnyGranted="ROLE_ACADEMICO"><li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico">home</h:outputLink></li></sec:authorize>
+                <sec:authorize ifAnyGranted="ROLE_PROFESSOR"><li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-professor">home</h:outputLink></li></sec:authorize>
+                <sec:authorize ifAnyGranted="ROLE_COORDENADOR"><li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador">home</h:outputLink></li></sec:authorize>
+                <sec:authorize ifAnyGranted="ROLE_ADMINISTRADOR"><li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-administrador">home</h:outputLink></li></sec:authorize>
+            </ul>
+        </nav>    
+
+        <nav id="menu" style="float: right;">
+            <ul>
+                <li><h:outputLink value="#">#{UsuarioController.loggedUsuario.nome}</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/j_spring_security_logout">Exit</h:outputLink></li>
+            </ul>
+        </nav> 
+    </h:body>    
+</ui:composition>
+

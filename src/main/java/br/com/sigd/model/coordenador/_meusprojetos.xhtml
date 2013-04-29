@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Projetos
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo"> 
+        Meus projetos
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog widgetVar="inserir">                                                            
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel for="nome" value="Acadêmico: "/>  
+                    <h:outputLabel id="nome"  value="#{ProjetoController.entity.proposta.academico.nome}" />          
+
+                    <h:outputLabel for="tema" value="Tema: "/>  
+                    <h:outputLabel id="tema" value="#{ProjetoController.entity.proposta.tema}" />          
+
+                    <h:outputLabel for="titulo" value="Titulo: "/>  
+                    <h:outputLabel id="titulo" value="#{ProjetoController.entity.proposta.titulo}" />      
+
+                    <h:outputLabel for="turma" value="Turma: "/>  
+                    <h:outputLabel id="turma" value="#{ProjetoController.entity.proposta.turma.codigoTurma}" />    
+                    <h:outputText  value="Status: " />
+                    <p:selectOneMenu value="#{ProjetoController.entity.projetoStatus}" converter="baseEntityConverter">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue="" itemDisabled="true"/>
+                        <f:selectItems value="#{ProjetoStatusController.list}" var="projetostatus" itemLabel="#{projetostatus.nome}" itemValue="#{projetostatus}" />                                                                                        
+                    </p:selectOneMenu>                                      
+                </h:panelGrid>
+                <p:commandButton id="atualizarProj" value="Atualizar" actionListener="#{ProjetoController.update2}" oncomplete="inserir.hide()" rendered="#{ProjetoController.isEdit}" update=":table">
+                    <p:tooltip for="atualizarProj" value="Clique aqui para Atualizar os dados" showEffect="fade" hideEffect="fade"/>  
+                </p:commandButton>
+
+            </p:dialog>
+        </h:form>
+
+        <h:form prependId="false" class="conteudo" id="dialog2">
+
+            <p:dialog widgetVar="feedback2" width="450" height="300">                        
+
+                <h:panelGrid columns="2" cellpadding="5">                                                                
+
+                    <h:outputText  value="Status: " />
+                    <p:selectOneMenu value="#{ProjetoController.idProjetoStatus}">
+                        <f:selectItems value="#{ProjetoStatusController.list}" var="projetostatus" itemLabel="#{projetostatus.nome}" itemValue="#{projetostatus.id}" />                                                                                        
+                    </p:selectOneMenu>      
+
+                    <h:outputLabel  value="Feedback:"/>  
+                    <p:inputTextarea title="Digite o feedback" value="#{ProjetoController.feedBack}" style="width: 300px" autoResize="no"/>                                 
+
+                    <h4>Log:</h4>
+                    <p:dataList value="#{ProjetoController.entity.feedBack}" var="feedback" type="ordered">
+                        #{feedback.feedback} - #{feedback.data}<br/>
+                    </p:dataList>
+
+                </h:panelGrid>                                                          
+
+                <p:commandButton id="atualizarF" value="Atualizar" actionListener="#{ProjetoController.update()}" oncomplete="feedback2.hide()" update=":table">
+                    <p:tooltip for="atualizarF" value="Clique aqui para Atualizar os dados" showEffect="fade" hideEffect="fade"/> 
+                </p:commandButton>
+
+            </p:dialog>
+        </h:form>
+        Projetos          
+        <h:form prependId="false" id="table" class="conteudo">
+            <p:messages autoUpdate="true"  />
+            <!-- So muda o nome do Bean-->                        
+            <br></br><br></br><br></br>               
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não há projetos"  value="#{ProjetoController.byProfessor}" var="Projeto" paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10">
+                <f:facet name="header">Meus Projetos</f:facet>
+
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Tema" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.tema}" />  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Titulo" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.titulo}" />  
+                </p:column>  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Status" /></f:facet>  
+                    <h:outputText value="#{Projeto.projetoStatus.nome}" />  
+                </p:column>                                  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Turma" /></f:facet>  
+                    <h:outputText value="#{Projeto.proposta.turma.codigoTurma}" />  
+                </p:column>                                  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="detalhar" title="Detalhar" icon="ui-icon-pencil" oncomplete="inserir.show()"  update=":dialog">
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" /> 
+                        <p:tooltip for="detalhar" value="Clique aqui para visualizar os detalhes" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>    
+                    <p:commandButton title="Baixar arquivo" rendered="#{Projeto.nomeArquivo != null}" icon="ui-icon-circle-triangle-s" ajax="false">  
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" />
+                        <p:fileDownload  value="#{ProjetoController.file}"  />  
+                    </p:commandButton>
+                    <p:commandButton id="feedbackProj" title="FeedBack" icon="ui-icon-search" oncomplete="feedback2.show()" update=":dialog2" >  
+                        <f:setPropertyActionListener value="#{Projeto}" target="#{ProjetoController.entity}" />
+                        <p:tooltip for="feedbackProj" value="Clique aqui para visualizar o feedback" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>     
+                     <p:commandButton value="Ver Capitulos"  action="pretty:meus-capitulos">  
+                        <f:setPropertyActionListener value="#{Projeto.id}" target="#{CapituloController.idProjetoBusca}" />                               
+                    </p:commandButton> 
+                </p:column>
+            </p:dataTable>
+        </h:form>       
+    </ui:define>
+</ui:composition>

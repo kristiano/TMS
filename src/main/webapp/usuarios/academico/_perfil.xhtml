@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Edit Profile
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">      
+        <p:messages  id="msgs" autoUpdate="true" showDetail="true" />
+        <h:form id="Dadospessoais" class="conteudo">
+            <h:panelGrid columns="1" cellpadding="2" width="100%" >
+                <p:tabView  >    
+                    <p:tab title="Personal Data">
+                       
+                        <br/>
+                        <h:outputLabel  value="*Name: "/><br/>  
+                        <p:inputText title="Exemplo: Paulo José da Silva" id="codigo" required="true" requiredMessage="Nome: Campo Obrigatório" value="#{AcademicoController.loggedAcademico.nome}" />                             
+                        <br/>
+                        <h:outputLabel  value="*CPF:"/><br/>                                     
+                        <p:inputMask title="Exemplo: 985.452.548-99" mask="999.999.999-99" autocomplete="off" maxlength="14"  converter="CPFConverter"  required="true" requiredMessage="CPF: Digite um CPF" value="#{AcademicoController.loggedAcademico.cpf}" />               
+                        <br/>
+                        <h:outputLabel  value="Date of Birth  "/><br/>  
+                        <p:calendar title="Indique a data de nascimento" locale="pt" size="10" navigator="true"  value="#{AcademicoController.loggedAcademico.nascimento}" pattern="dd/MM/yyyy" />
+                    </p:tab> 
+                    <p:tab title="Adress">                                    
+                        <h:outputText value="Sidewalk" /><br/>
+                        <h:inputText title="Exemplo: 304 sul, Alamenda 09" maxlength="120" size="51"  autocomplete="off" value="#{AcademicoController.loggedAcademico.endereco.logradouro}" />
+                        <br/>
+                        <h:outputText value="Number" /><br/>
+                        <h:inputText title="Exemplo: 17" maxlength="12" size="10"  autocomplete="off" value="#{AcademicoController.loggedAcademico.endereco.numero}" />               
+                        <br/>
+                        <h:outputText value="Neighborhood" /><br/>
+                        <h:inputText title="Exemplo: Ipanema" maxlength="120" size="50"  autocomplete="off"  value="#{AcademicoController.loggedAcademico.endereco.bairro}" />     
+                        <br/>
+                        <h:outputText value="Complement" /><br/>
+                        <h:inputText title="Exemplo: De frente ao mercado" maxlength="120" size="80" autocomplete="off"  value="#{AcademicoController.loggedAcademico.endereco.complemento}" />
+                        <br/>
+                        <h:outputLabel value="CEP" /><br/>
+                        <p:inputMask title="Exemplo: 77.555-625" mask="99.999-999" size="10" converter="CEPConverter"   value="#{AcademicoController.loggedAcademico.endereco.cep}"  />
+                    </p:tab> 
+                    <p:tab title="Contact">                                  
+                        <h:outputText value="*Phone" /><br/>
+                        <p:inputMask title="Exemplo:  (63)3215-8989" mask="(99)9999-9999" converter="TelefoneConverter" maxlength="13" value="#{AcademicoController.loggedAcademico.telefone.numero}" required="true" requiredMessage="Telefone: Campo Obrigatório"/>
+                        <br/>
+                        <h:outputText  value="*E-mail:"/><br/>  
+                        <p:inputText title="Exemplo: paulo@live.com"  maxlength="120" size="80"  autocomplete="off" value="#{AcademicoController.loggedAcademico.email}" required="true" requiredMessage="E-mail: Campo Obrigatório"/> 
+                        <p:commandButton id="atualizarPerfil" value="Update" update=":msgs" actionListener="#{AcademicoController.editarPerfil}">
+                            <p:tooltip for="atualizarPerfil" value="Clique aqui para Atualizar os dados" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </p:tab> 
+
+                </p:tabView>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

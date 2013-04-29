@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Capítulos
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+
+
+        <h:form prependId="false" id="form" class="conteudo">                          
+            <p:dialog widgetVar="feedback" id="dialog" width="450">                        
+
+                <h:panelGrid columns="2" cellpadding="5" >                                                                                             
+
+                    <h4>Log:</h4>                                
+                    <p:dataList value="#{CapituloController.entity.feedBack}" var="feedback" type="ordered" styleClass="dataList">
+                        #{feedback.feedback} - #{feedback.data}<br/>
+                    </p:dataList>                                
+
+                </h:panelGrid>                                                          
+
+            </p:dialog>
+       
+            <p:dialog  maximizable="true" minimizable="true" widgetVar="inserir" id="dp" hideEffect="fade" >                       
+
+                <h:outputLabel  value="Arquivo: "/>    
+                <p:fileUpload  label="Escolher"   invalidFileMessage="Arquivo inválido" auto="true" 
+                               invalidSizeMessage="Tamanho de arquivo inválido" sizeLimit="9999999"  required="true"  requiredMessage="Faça upload de um arquivo"  fileUploadListener="#{CapituloController.upFile}" />   
+
+            </p:dialog>
+        
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <h:outputLabel   value="Projeto "/> 
+            <h:selectOneMenu value="#{CapituloController.idProjetoBusca}" style="width:250px;" >                            
+                <f:selectItems  value="#{ProjetoController.byAcademico}" var="obj" itemLabel="#{obj.proposta.titulo}" itemValue="#{obj.id}"  />
+            </h:selectOneMenu>                              
+
+            <p:commandButton id="buttonVisualizarCap" value="Mostrar Capítulos" update="dtCapitulos">
+                <p:tooltip for="buttonVisualizarCap" value="Visualizar os capítulos deste projeto" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>                        
+            <!-- Muda o Bean-->
+            <p:dataTable emptyMessage="Não há propostas cadastradas" id = "dtCapitulos" value="#{CapituloController.byProjeto}" var="Capitulo"     paginator="true" rows="10"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="3,6">
+                <f:facet name="header">Capitulos</f:facet>                 
+                
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Número" /></f:facet>  
+                    <h:outputText value="#{Capitulo.nome}" />  
+                </p:column>  
+                <!-- De acordo com os campos da entidade-->
+
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Situação" /></f:facet>  
+                    <h:outputText value="#{Capitulo.status}" />  
+                </p:column>  
+
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+
+                    <p:commandButton id="buttonEscolherArq" title="Escolher um arquivo" icon="ui-icon-arrowthick-1-n" oncomplete="inserir.show()"  update=":form:dp">
+                        <f:setPropertyActionListener value="#{Capitulo}" target="#{CapituloController.entity}" /> 
+                        <p:tooltip for="buttonEscolherArq" value="Clique aqui para escolher um arquivo" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>                              
+
+                    <p:commandButton icon="ui-icon-arrowthickstop-1-s" title="baixar arquivo" rendered="#{Capitulo.nomeArquivo != null}">  
+                        <f:setPropertyActionListener value="#{Capitulo}" target="#{CapituloController.entity}" />
+                        <p:fileDownload  value="#{CapituloController.file}"  />  
+                    </p:commandButton>
+                    <p:commandButton id="buttonVisualizarF" icon="ui-icon-search" title="Feed Back" oncomplete="feedback.show()" update=":form:dialog">  
+                        <f:setPropertyActionListener value="#{Capitulo}" target="#{CapituloController.entity}" />   
+                        <p:tooltip for="buttonVisualizarF" value="Clique aqui para Visualizar o feedback" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>   
+                </p:column>
+            </p:dataTable>                        
+        </h:form>       
+    </ui:define>
+</ui:composition>

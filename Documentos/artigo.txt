@@ -1,0 +1,283 @@
+Métodos
+
+Motivação: 
+	- Documentação incompleta
+	- Baixa compreensibilidade do código 
+	- Solidificar a base do projeto afim de melhorar expansões futuras
+	- Dificuldade de manutenção
+	
+Documents lessons learned
+
+	- Apesar do tempo inicial perdido para aprender as ferramentas e o método SCRUM, a velocidade de desenvolvimento após esse aprendizado concluído se torna algo 
+	impressionante maior se equiparado ao desenvolvimento via Unified Process (UP).	
+	- A curva de aprendizado, poder de escrita e evolução é bem mais rápida quando se usa ferramentas e métodos agéias aliados a uma boa engenharia de software.		
+	- Inicialmente utilizou-se o mysql como o banco de dados do sistema, porém, [problemas do mysql], durante o desenvolvimento o sistema foi modificado para Postgresql, 
+	o que não exigiu muito esforço já que o hibernate abstrai a parte de conexão, e, como o banco de dados é criado a partir das classes não foi preciso que se refizesse 
+	o banco.	
+	
+	
+Correção: 
+
+	Prettyfaces e não Prettyface
+	
+Resultados (Exemplos de usos)
+
+	Hibernate
+	
+	
+	
+		Função insert de Professor: 
+		
+		public void insert(Professor prof) throws ExceptionDatabase {
+        Conexao con = new Conexao();
+        String password = new String();
+
+        try
+        {
+            con.open(false);
+
+            String sql = "select nextval('sigd.idpessoa_seq')";
+            ResultSet rsSeq = con.execQuery(sql);
+
+            if (rsSeq.next()) {
+                prof.setIdProfessor(rsSeq.getInt(1));
+            }
+
+            if(prof.getEmail().trim().equals(""))
+            {
+                sql = "INSERT INTO sigd.pessoa(id_pessoa, nome) VALUES (?, ?)";
+                PreparedStatement pstp = con.getPreparedStatement(sql);
+                pstp.setInt(1,prof.getIdProfessor());
+                pstp.setString(2,prof.getNome());
+                con.qryExecute(pstp);
+            }
+            else{
+                sql = "INSERT INTO sigd.pessoa(id_pessoa, nome, email) VALUES (?, ?, ?)";
+                PreparedStatement pstp = con.getPreparedStatement(sql);
+                pstp.setInt(1,prof.getIdProfessor());
+                pstp.setString(2,prof.getNome());
+                pstp.setString(3, prof.getEmail());
+                con.qryExecute(pstp);
+            }
+
+            if(prof.getCpf().trim().equals(""))
+            {
+                sql = "INSERT INTO sigd.pessoa_fisica(id_fisica) VALUES (?)";
+                PreparedStatement pstf = con.getPreparedStatement(sql);
+                pstf.setInt(1,prof.getIdProfessor());
+                con.qryExecute(pstf);
+            }
+            else if(prof.getDataNascimento().equals(""))
+            {
+                sql = "INSERT INTO sigd.pessoa_fisica(id_fisica,cpf) VALUES (?,?)";
+                PreparedStatement pstf = con.getPreparedStatement(sql);
+                pstf.setInt(1,prof.getIdProfessor());
+                pstf.setString(2,prof.getCpf());
+                con.qryExecute(pstf);
+            }
+            else
+            {
+                SimpleDateFormat dateBR = new SimpleDateFormat("yyyy-MM-dd");
+
+                sql = "INSERT INTO sigd.pessoa_fisica(id_fisica,cpf,data_nascimento) VALUES (?,?,?)";
+                PreparedStatement pstf = con.getPreparedStatement(sql);
+                pstf.setInt(1,prof.getIdProfessor());
+                pstf.setString(2,prof.getCpf());
+                pstf.setDate(3, Date.valueOf(dateBR.format(prof.getDataNascimento())));
+                con.qryExecute(pstf);
+            }
+
+            sql = "INSERT INTO sigd.professor(id_professor, matricula_funcional) VALUES (?, ?)";
+            PreparedStatement pstP = con.getPreparedStatement(sql);
+            pstP.setInt(1,prof.getIdProfessor());
+            pstP.setString(2,prof.getMatricula());
+            con.qryExecute(pstP);
+
+            if(!prof.getEndereco().getLogradouro().equals("") && !prof.getEndereco().getNumero().equals("") && !prof.getEndereco().getBairro().equals("") && prof.getEndereco().getCep() != 0)
+            {
+                if(prof.getEndereco().getComplemento().equals(""))
+                {
+                    sql = "INSERT INTO sigd.endereco(id_pessoa, logradouro, bairro, numero, id_municipio, cep) VALUES (?, ?, ?, ?, ?, ?)";
+                    PreparedStatement pstE = con.getPreparedStatement(sql);
+                    pstE.setInt(1,prof.getIdProfessor());
+                    pstE.setString(2,prof.getEndereco().getLogradouro());
+                    pstE.setString(3,prof.getEndereco().getBairro());
+                    pstE.setString(4,prof.getEndereco().getNumero());
+                    pstE.setInt(5,prof.getEndereco().getCidade().getIdCidade());
+                    pstE.setInt(6,prof.getEndereco().getCep());
+                    con.qryExecute(pstE);
+
+                }
+                else
+                {
+                    sql = "INSERT INTO sigd.endereco(id_pessoa, logradouro, complemento, bairro, numero, id_municipio, cep) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    PreparedStatement pstE = con.getPreparedStatement(sql);
+                    pstE.setInt(1,prof.getIdProfessor());
+                    pstE.setString(2,prof.getEndereco().getLogradouro());
+                    pstE.setString(3,prof.getEndereco().getComplemento());
+                    pstE.setString(4,prof.getEndereco().getBairro());
+                    pstE.setString(5,prof.getEndereco().getNumero());
+                    pstE.setInt(6,prof.getEndereco().getCidade().getIdCidade());
+                    pstE.setInt(7,prof.getEndereco().getCep());
+                    con.qryExecute(pstE);
+                }
+            }
+
+            password = "professor";
+
+            MessageDigest algorithm;
+            algorithm = MessageDigest.getInstance("SHA-256");
+
+            byte messageDigest[] = algorithm.digest(password.getBytes("UTF-8"));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : messageDigest) {
+              hexString.append(String.format("%02X", 0xFF & b));
+            }
+            String senha = hexString.toString();
+
+            sql = "select nextval('sigd.idusuario_seq')";
+            ResultSet rsSeqUser = con.execQuery(sql);
+
+            Usuario user = new Usuario();
+            if (rsSeqUser.next()) {
+                user.setIdUsuario(rsSeqUser.getInt(1));
+            }
+
+            //Cria um usuario com senha padrao: professor
+            sql = "INSERT INTO sigd.usuario(id_usuario, login, senha, id_pessoa) VALUES (?, ?, ?, ?)";
+            PreparedStatement pstU = con.getPreparedStatement(sql);
+            pstU.setInt(1,user.getIdUsuario());
+            pstU.setString(2,prof.getMatricula());
+            pstU.setString(3,senha);
+            pstU.setInt(4,prof.getIdProfessor());
+            con.qryExecute(pstU);
+
+            sql = "INSERT INTO sigd.usuario_perfil(id_usuario, id_perfil) VALUES (?, 4)";
+            pstU = con.getPreparedStatement(sql);
+            pstU.setInt(1,user.getIdUsuario());
+            con.qryExecute(pstU);
+                
+            
+            con.commit();
+        }
+        catch (SQLException e) {
+            throw new ExceptionDatabase(e.getMessage());
+        }
+        catch(NullPointerException e){
+            throw new ExceptionDatabase(e.getMessage());
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new ExceptionDatabase(e.getMessage());
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ExceptionDatabase(e.getMessage());
+        }
+        finally {
+            con.close();
+        }
+    }
+	
+	Controller:
+	
+	 public String insert(){
+        FacesContext mensagem = FacesContext.getCurrentInstance();
+        try
+        {
+            ProfessorValidator profVal = new ProfessorValidator();
+            profVal.validate(null, null, getProfessor());
+
+            ProfessorDAO profDAO = new ProfessorDAO();
+            profDAO.insert(getProfessor());
+            mensagem.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Professor(a): "+getProfessor().getNome()+", foi inserido com sucesso!", null));
+            setProfessor(null);
+            setListaProfessor(null);
+            setLazy(null);
+            setActiveTab(0);
+            return "actListaProfessor";
+        }
+        catch (ExceptionDatabase e) 
+        {
+            setActiveTab(0);
+            getProfessor().setIdProfessor(null);
+            setListaProfessor(null);
+            setLazy(null);
+            mensagem.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(), null));
+            return null;
+        }
+        catch(ValidatorException e)
+        {
+            mensagem.getMessageList().iterator();
+            return null;
+        }
+    }
+	
+	Função insert do professor:
+	
+	DAO agora é chamado de Repository
+	
+	Serve para todas as classes
+	
+	Class GenericRepository<Class>
+	
+    public void insert(Class beInserted) {
+        this.entityManager.persist(beInserted); 
+        this.entityManager.flush();        
+    }
+	
+	Controller
+	
+	@Override
+    public void insert() {
+        this.repository = new ProfessorRepository(ApplicationUtilies.catchEntityManager());        
+        this.repository.insert(this.entity);        
+        this.entity = new Professor();        
+    }		
+	
+	Maven
+
+	The most basic project structure will compile code, run all your unit tests, and build a jar file
+	Due to the standardization, and logical defaults/conventions, I can open up any project that uses Maven for it’s build system and immediately understand the build process and the generated artifacts. This is in stark contrast to ant buildfiles which are custom from project to project.
+	Since all needed artifacts (jars) are versioned and live in a Maven Repository, I don’t have to include the actual jar files for third party libraries within my project structure.
+	
+
+	
+	Em relação aos frameworks utilizados durante a versão 2.0, como o hibernate transforma as classes em tabelas, ele libera o desenvolvedor do trabalho manual além de 
+	manter o programa portátil para qualquer banco de dados, no exemplo abaixo demonstra-se a evidente diminuição do código com o uso do hibernate:
+	
+	Exemplo
+	
+	já o Spring Security trouxe a pretty complete solution for all kinds of security needs. O que fixa o conceito de abstração trazido pelo hibernate, retirando o trabalho
+	manual e de certa forma perigoso de deixar a implementação da segurança. Sobre o Maven,
+	is the most basic project structure will compile code, run all your unit tests, and build a jar file e o Prettyfaces
+
+	solve the “bad look” problem elegantly, like this example
+	
+	Version 1.0
+	
+	www.comp.uft.edu.br/sigd/formAcademico
+	
+	Version 2.0
+	
+	www.comp.uft.edu.br/sigd/academic-area
+	
+	
+	In relation to the frameworks used for version 2.0, as the hibernate transforms the classes in tables, it frees the developer of manual work in addition to maintaining the program portable to any database. In the following example depicts the apparent reduction in the code using the hibernate:
+
+example
+
+Spring Security has already brought a pretty complete solution for all kinds of security needs. What sets the concept of abstraction brought by hibernate, removing the manual work and somewhat dangerous to leave the security implementation. About Maven, is the most basic project structure will compile code, run all your unit tests, and build the jar file. At last, Prettyfaces solved the "look bad" problem elegantly, like this example:
+
+Version 1.0
+
+www.comp.uft.edu.br / SigD / formAcademico.xhtml
+
+URL that shows some of the academic information, direct access to the file xhtml.
+
+Version 2.0
+
+www.comp.uft.edu.br / SigD / academic-area
+
+URL that shows the area of ??academic encapsulating the following address:
+
+www.comp.uft.edu.br / SigD / user / academic / index.xhtml

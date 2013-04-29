@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"      
+      >
+
+    <h:head>        
+        <title>
+            <ui:insert name="title">TMS - Transplantation Management System</ui:insert>            
+        </title>
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+        <link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resourses/css/style.css"/>
+        <link rel="icon"               
+              href="#{facesContext.externalContext.request.contextPath}/template/favicon.ico"/>      
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />               
+    </h:head>
+
+    <h:body>                   
+
+        <div id="page">
+                   
+            <h:panelGroup layout="block" id="logo-login">               
+                <ui:insert name="logo" >                    
+                    <ui:include src="/template/logo.xhtml" />
+                </ui:insert>
+            </h:panelGroup>   
+
+            <h:panelGroup layout="block" id="centro">               
+                <h:panelGroup layout="block" id="conteudo-login">                
+                    <ui:insert name="conteudo">
+                        teste
+                    </ui:insert>
+                </h:panelGroup>
+            </h:panelGroup>  
+
+            <h:panelGroup layout="block" id="rodape">
+                <ui:insert name="rodape" >
+                    <span style="margin-left: 70px;">TMS - Transplantation Management System - Desenvolvido pelo Núcleo de Desenvolvimento de Software - UFT - Todos os direitos reservados - 2013</span>
+                </ui:insert>
+            </h:panelGroup>                            
+
+        </div>      
+    </h:body>
+
+</html>

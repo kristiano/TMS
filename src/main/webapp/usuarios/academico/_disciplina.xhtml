@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Transplantation Research
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:dialog  header="New Transplantation Research" modal="false" showEffect="fade" hideEffect="fade" widgetVar="inserir" closable="false" resizable="false">                         
+
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+
+                    <h:outputLabel  value="Budget"/>                       
+                    <p:inputText   title="Indique a carga horária da Disciplina"  value="#{DisciplinaController.entity.cargaHoraria}" />                       
+
+                    <h:outputLabel  value="Code "/>  
+                    <p:inputText title="Exemplo: 79434564" required="true" value="#{DisciplinaController.entity.codigo}" />     
+
+                    <h:outputLabel  value="Name "/>  
+                    <p:inputText title="Exemplo: Cálculo" required="true" value="#{DisciplinaController.entity.nome}" />     
+
+                    <h:outputLabel  value="Transplantation Unit "/> 
+                    <h:selectOneMenu id="curso" value="#{DisciplinaController.entity.curso}"  converter="baseEntityConverter" >
+                        <f:selectItem itemLabel=" - select - " itemValue=""/>
+                        <f:selectItems  value="#{CursoController.list}" var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}"  />
+                    </h:selectOneMenu>
+
+                    <h:outputLabel  value="Details "/>  
+                    <h:inputTextarea title="Digite a ementa da nova Disciplina" cols="50" rows="5" id="ementa" required="true" value="#{DisciplinaController.entity.ementa}" /> 
+
+
+
+                </h:panelGrid>  
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="buttonInserirDisc" value="Insert" actionListener="#{DisciplinaController.insert}" oncomplete="inserir.hide()" rendered="#{DisciplinaController.isNew}" update=":table">
+                    <p:tooltip for="buttonInserirDisc" value="Clique aqui para Inserir a Disciplina" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonAtualizarDisc" value="Update" actionListener="#{DisciplinaController.update}" oncomplete="inserir.hide()" rendered="#{DisciplinaController.isEdit}" update=":table">
+                    <p:tooltip for="buttonAtualizarDisc" value="Clique aqui para Atualizar a Disciplina" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton value="Cancel" onclick="inserir.hide()" type="button"/>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">
+            <p:messages autoUpdate="true"  />
+            <!-- So muda o nome do Bean-->
+            <p:commandButton id="buttonNovaDisc" value="New " oncomplete="inserir.show()" actionListener="#{DisciplinaController.prepareNew()}" update=":dialog">
+                <p:tooltip for="buttonNovaDisc" value="Create a new Transplantation Research" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>                        
+            <!-- Muda o Bean-->
+            <p:dataTable  id = "dataTable" value="#{DisciplinaController.list}" var="disciplina"     paginator="true" rows="10"  
+                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                          rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">Lista de Disciplinas</f:facet>  
+                <p:column>  
+                    <f:facet name="header" > <h:outputText value="code"/> </f:facet>  
+                    <h:outputText value="#{disciplina.codigo}" />  
+                </p:column>  
+                
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="name" /></f:facet>  
+                    <h:outputText value="#{disciplina.nome}" />  
+                </p:column>                                  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="Transplantation Unit" /></f:facet>  
+                    <h:outputText value="#{disciplina.curso.nome}" />  
+                </p:column>  
+
+                <!-- So muda o nome do Bean-->
+                <p:column>
+                    <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                    <div id="acao">
+                        <p:commandButton id="buttonEditarDisc" icon="ui-icon-pencil" title="edit" oncomplete="inserir.show()" actionListener="#{DisciplinaController.prepareEdit}" update=":dialog">
+                            <f:setPropertyActionListener value="#{disciplina}" target="#{DisciplinaController.entity}" /> 
+                            <p:tooltip for="buttonEditarDisc" value="Clique aqui para Editar esta Disciplina" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="buttonExcluirDisc" icon="ui-icon-trash" title="delete" action="#{DisciplinaController.remove}" update=":table"> 
+                            <f:setPropertyActionListener value="#{disciplina}" target="#{DisciplinaController.entity}" />
+                            <p:tooltip for="buttonExcluirDisc" value="Clique aqui para Excluir esta Disciplina" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>
+            * If the discipline is linked to a class, it can not be erased.
+        </h:form>       
+
+    </ui:define>                        
+</ui:composition>

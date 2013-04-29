@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Committee
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">                            
+        <h:form prependId="false" id="dialog">
+            <p:dialog header="Register Comittee" modal="false" showEffect="fade" hideEffect="fade" closable="true" maximizable="true" minimizable="true" widgetVar="inserir">                                                            
+                <h:panelGrid columns="2" cellpadding="5"> 
+
+                    <h:outputLabel for="data" value="Data: "/>                                          
+                    <p:calendar locale="pt"  id="data" value="#{BancaController.entity.dataDefesa}" mindate="#{BancaController.today}" />                      
+
+                    <h:outputText  value="Committee members: " /> 
+                    <p:selectManyMenu  id="avaliadores" value="#{BancaController.entity.avaliadores}"  converter="baseEntityConverter">                                            
+                        <f:selectItems value="#{ProfessorController.list}" var="avaliadores" itemLabel="#{avaliadores.nome}" itemValue="#{avaliadores}" />                                                                                        
+                    </p:selectManyMenu>    
+
+
+                    <h:outputLabel  value="Project: "/>  
+                    <p:selectOneMenu required="true" requiredMessage="Select a project" id="projeto" value="#{BancaController.idProjeto}" >
+                        <f:selectItem itemLabel="Select a option" itemValue=""/>
+                        <f:selectItems value="#{ProjetoController.list}" var="projeto" itemLabel="#{projeto.proposta.titulo}" itemValue="#{projeto.id}" />                                                                                        
+                    </p:selectOneMenu>
+
+                </h:panelGrid>  
+
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="inserirBanca" value="Insert" actionListener="#{BancaController.insert}" oncomplete="inserir.hide()" rendered="#{BancaController.isNew}" update=":table">
+                    <p:tooltip for="inserirBanca" value="Click here to Insert this Committee" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="atualizarBanca" value="Update" actionListener="#{BancaController.update}" oncomplete="inserir.hide()" rendered="#{BancaController.isEdit}" update=":table">
+                    <p:tooltip for="atualizarBanca" value="Click here to update" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table">
+            <!-- So muda o nome do Bean-->
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:commandButton id="novaBanca" value="New Committee" oncomplete="inserir.show()" actionListener="#{BancaController.prepareNew()}" update=":dialog">
+                <p:tooltip for="novaBanca" value="Click here to create a new Committee" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>
+            <p:fieldset legend="Committees">
+                <!-- Muda o Bean-->
+                <p:dataTable emptyMessage="No records"  value="#{BancaController.list}" var="banca" paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10">
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Date" /></f:facet>  
+                        <h:outputText value="#{banca.dataDefesa}" />                                                          
+                    </p:column>  
+                    <!-- De acordo com os campos da entidade-->
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Project" /></f:facet>  
+                        <h:outputText value="#{banca.projeto.id}" />  
+                    </p:column>  
+
+
+                    <!-- So muda o nome do Bean-->
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="Actions" /></f:facet>  
+                        <div id="acao">
+                            <p:commandButton id="editarBanca" value="Update" oncomplete="inserir.show()" actionListener="#{BancaController.prepareEdit}" update=":dialog">
+                                <f:setPropertyActionListener value="#{banca}" target="#{BancaController.entity}" /> 
+                                <p:tooltip for="editarBanca" value="Click here to update" showEffect="fade" hideEffect="fade"/>
+                            </p:commandButton>
+                            <p:commandButton id="excluirBanca" value="Delete" action="#{BancaController.remove}" update=":table"> 
+                                <f:setPropertyActionListener value="#{banca}" target="#{BancaController.entity}" /> 
+                                <p:tooltip for="excluirBanca" value="Click here to delete" showEffect="fade" hideEffect="fade"/>
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>   
+    </ui:define>
+</ui:composition>

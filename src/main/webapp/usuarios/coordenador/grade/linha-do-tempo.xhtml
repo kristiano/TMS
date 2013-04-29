@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Grade
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="../menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+
+        <h:body>
+
+
+            <h:form class="conteudo" id="dialog">                    
+                <p:dialog widgetVar="avaliar" width="800" height="700" closable="false">                        
+                    <p:separator />
+                    <p:lineChart value="#{GradeController.linhaDoTempo}" legendPosition="e" zoom="false" animate="true"  
+                                 title="#{GradeController.auxAcademico.nome}" minY="0" maxY="10" style="width:700px;" widgetVar="chart"/>  
+                    <br/>
+                    <p:separator />
+                    <br/>
+                    <h:outputText value="Detailed evaluating: " style="font-weight: bold;"/> <br/><br/>
+                    <p:dataTable emptyMessage="no records."  value="#{GradeController.carregarPorAvaliado(GradeController.auxAcademico.id)}" var="avaliacao" paginator="false" rows="10"                                   
+                                 >                    
+
+                        <p:column>  
+                            <f:facet name="header"><h:outputText value=" Date" /></f:facet>  
+                            <h:outputText value="#{avaliacao.dataDeCriacao}"/>  
+                        </p:column>                   
+
+                        <p:column>  
+                            <f:facet name="header"><h:outputText value=" Grade" /></f:facet>  
+                            <h:outputText value="#{avaliacao.valor}"/>  
+                        </p:column>                   
+
+                        <p:column>  
+                            <f:facet name="header"><h:outputText value=" Observation" /></f:facet>  
+                            <h:outputText value="#{avaliacao.conteudo}"/>  
+                        </p:column>                   
+
+                        <p:dataTable emptyMessage="the are not patients available for evaluating of timeline"  value="#{ProfessorController.academicosTurmasProfessorLogado}" var="academico" paginator="true" rows="10"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="5,10">                    
+
+                            <p:column>  
+                                <f:facet name="header"><h:outputText value=" name" /></f:facet>  
+                                <h:outputText value="#{academico.nome}" />  
+                            </p:column>                   
+
+                            <p:column>
+                                <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                                <p:commandButton id="avaliar" icon="ui-icon-search" title="evaluate" oncomplete="avaliar.show()" action="#{GradeController.criarLinhaDoTempo()}" update=":dialog :table">
+                                    <f:setPropertyActionListener value="#{academico}" target="#{GradeController.auxAcademico}" /> 
+                                    <p:tooltip for="avaliar" value="to see or change the patient timeline." showEffect="fade" hideEffect="fade"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>     
+
+                        <p:column>
+                            <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                            <p:commandButton id="avaliar" icon="ui-icon-search" title="evaluate" oncomplete="avaliar.show()" actionListener="#{GradeController.criarLinhaDoTempo()}" update=":dialog :table">
+                                <f:setPropertyActionListener value="#{academico}" target="#{GradeController.auxAcademico}" /> 
+                                <p:tooltip for="avaliar" value="to see or change the patient timeline." showEffect="fade" hideEffect="fade"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable> 
+                    <br/>
+                    <h:outputText value="Final Grade: " style="font-weight: bold;"/>                    
+                    <h:outputText value="#{GradeController.total}"/>                    
+                    <p:separator /><br/>
+                    <h:outputText value="Add evaluating: " style="font-weight: bold;"/>                    
+                    <p>                        
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Score: " style="font-weight: bold;"/>
+                            <h:inputText value="#{GradeController.entity.valor}"/> 
+                            <h:outputText value="Description " style="font-weight: bold;"/>
+                            <h:inputTextarea value="#{GradeController.entity.conteudo}"/>                       
+                            <p:commandButton value="Insert Evaluating" actionListener="#{GradeController.inserirAvaliacaoLinhaTempo()}" ajax="false"/>
+                            <p:commandButton action="pretty:linhadotempo-grade-coordenador" ajax="false" value="Voltar" immediate="true" /> 
+                        </h:panelGrid>                              
+                    </p>    
+                </p:dialog>
+            </h:form>
+
+
+
+            <h:form prependId="false" id="table" class="conteudo">                                    
+                <p:messages autoUpdate="true" showDetail="true"/>
+                <!-- Muda o Bean-->
+                <p:dataTable emptyMessage="there are not patients available to timeline evaluating."  value="#{ProfessorController.academicosTurmasProfessorLogado}" var="academico" paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10">                    
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value=" name" /></f:facet>  
+                        <h:outputText value="#{academico.nome}" />  
+                    </p:column>                   
+
+                    <!-- So muda o nome do Bean-->
+
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                        <p:commandButton id="avaliar" icon="ui-icon-search" title="evaluate" oncomplete="avaliar.show()" action="#{GradeController.criarLinhaDoTempo()}" update=":dialog :table">
+                            <f:setPropertyActionListener value="#{academico}" target="#{GradeController.auxAcademico}" /> 
+                            <p:tooltip for="avaliar" value="Clique aqui para ver e alterar a linha do tempo do acadêmico." showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>                        
+            </h:form>  
+        </h:body>             
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Grade 
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="/usuarios/professor/menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+
+        <h:body>
+
+
+
+            <p:dialog widgetVar="avaliar" id="dialog" width="500" height="300" closable="false">                        
+                <h:form class="conteudo">
+                    <h:outputText value="Evaluators " style="font-weight: bold;"/>
+                    <ui:repeat value="#{GradeController.auxBanca.avaliadores}" var="avaliador" >                                   
+                        <p>
+                            <h:outputText value="name " style="font-weight: bold;"/>
+                            <h:outputText value="#{avaliador.nome}"/> <br/>
+                            <h:outputText value="Not evaluated" rendered="#{GradeController.carregarPorAvaliador(avaliador.id).valor == null}"/> 
+                            <h:outputText value="Grade: " style="font-weight: bold;"  rendered="#{GradeController.carregarPorAvaliador(avaliador.id).valor != null}"/>
+                            <h:outputText value="#{GradeController.carregarPorAvaliador(avaliador.id).valor}" rendered="#{GradeController.carregarPorAvaliador(avaliador.id).valor != null}"/> 
+                            <br/>
+                            <h:outputText value="Observation: " style="font-weight: bold;"  rendered="#{GradeController.carregarPorAvaliador(avaliador.id).valor != null}"/>
+                            <h:outputText value="#{GradeController.carregarPorAvaliador(avaliador.id).conteudo}" rendered="#{GradeController.carregarPorAvaliador(avaliador.id).valor != null}"/> 
+                            <p:separator />
+                        </p>
+                    </ui:repeat>                    
+                    <h:outputText value="Average: " style="font-weight: bold;"/>
+                    <h:outputText value="#{GradeController.auxBanca.notaMedia}"/> <br/>
+                    <p:separator />
+                    <h:outputText value="My evaluating" style="font-weight: bold;"/>                    
+
+                    <p>                        
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="grade: " style="font-weight: bold;"/>
+                            <h:inputText value="#{GradeController.entity.valor}"/> 
+                            <h:outputText value="observations:" style="font-weight: bold;"/>
+                            <h:inputTextarea value="#{GradeController.entity.conteudo}"/>                       
+                            <p:commandButton value="insert evaluating" actionListener="#{GradeController.avaliarBanca()}" ajax="false"/>
+                            <p:commandButton action="pretty:professor" ajax="false" value="back" immediate="true" /> 
+                        </h:panelGrid>                              
+                    </p>    
+                </h:form>
+            </p:dialog>
+
+
+
+            <h:form prependId="false" id="table" class="conteudo">                                    
+                <p:messages autoUpdate="true" showDetail="true"/>
+                <!-- Muda o Bean-->
+                <p:dataTable emptyMessage="there are not committees available to evaluating."  value="#{BancaController.defendidasPorAvaliador}" var="banca" paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10">                    
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value=" Title of project" /></f:facet>  
+                        <h:outputText value="#{banca.projeto.proposta.titulo}" />  
+                    </p:column>  
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Date" /></f:facet>  
+                        <h:outputText value="#{banca.dataDefesa}" />  
+                    </p:column> 
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Patient" /></f:facet>  
+                        <h:outputText value="#{banca.projeto.proposta.academico.nome}" />  
+                    </p:column> 
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Average grade" /></f:facet>  
+                        <h:outputText value="#{banca.notaMedia}" />  
+                    </p:column>  
+
+                    <!-- So muda o nome do Bean-->
+
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                        <p:commandButton id="avaliar" icon="ui-icon-search" title="evaluate" oncomplete="avaliar.show()" update=":dialog">
+                            <f:setPropertyActionListener value="#{banca}" target="#{GradeController.auxBanca}" /> 
+                            <p:tooltip for="avaliar" value="to visualize evaluating or evaluate a committee" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>                        
+            </h:form>  
+        </h:body>             
+    </ui:define>
+</ui:composition>

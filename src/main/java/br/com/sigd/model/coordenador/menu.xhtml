@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">                       
+    <h:body>            
+        <nav id="menu">
+            <ul>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/projetos" class="link-menu">Projetos (All)</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/propostas" class="link-menu">Propostas (All)</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/meus-projetos" class="link-menu">Meus Projetos</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/minhas-propostas" class="link-menu">Minhas Propostas</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/meus-capitulos" class="link-menu">Meus Capítulos</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/academicos" class="link-menu">Academicos</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/area-atuacao" class="link-menu">Area Atuação</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/banca" class="link-menu">Banca</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/professores" class="link-menu">Professores</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/turmas" class="link-menu">Turmas</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/perfil" class="link-menu">Editar Perfil</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/user-feedback" class="link-menu">User Feedback</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/grade" class="link-menu">Grade</h:outputLink></li>
+            </ul>
+        </nav>
+    </h:body>    
+</ui:composition>
+

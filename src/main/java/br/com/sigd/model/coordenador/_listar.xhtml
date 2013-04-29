@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+    <ui:define name="title">
+        Listar
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+
+        <h:form prependId="false" class="conteudo">     
+            <p:commandButton value="Novo" action="pretty:user-feedback-coordenador" ajax="false"/>
+            <br/><br/><br/>
+            <h:outputText value="Minhas solicitações" />                        
+            <p:dataTable emptyMessage="Não há registros." value="#{UserFeedbackController.byUsuarioLogado}" var="feedback" resizableColumns="true">
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{feedback.id}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situação" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problema Associado" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Data da solicitação" /></f:facet>  
+                    <h:outputText value="#{feedback.dataSolicitacao}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Status" /></f:facet>  
+                    <h:outputText value="#{feedback.status}" />  
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="visualizarInfo" alt="Visualise informações" value="Abrir" oncomplete="visualizar.show()" update=":dialog">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.mostrar}" />
+                        <p:tooltip for="visualizarInfo" value="Clique aqui para Visualizar as informações" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>                            
+            </p:dataTable>
+            <br/><br/><br/>
+            <h:outputText value="Pendentes" />                                           
+            <p:dataTable emptyMessage="Não há registros." value="#{UserFeedbackController.pendentes}" var="feedback" resizableColumns="true">                            
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Nome" /></f:facet>  
+                    <h:outputText value="#{feedback.usuario.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Turma" /></f:facet>  
+                    <h:outputText value="#{feedback.turma.codigoTurma}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situação" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problema Associado" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Data da solicitação" /></f:facet>  
+                    <h:outputText value="#{feedback.dataSolicitacao}" />  
+                </p:column>  
+
+                <p:column>
+                    <h:panelGrid columns="3">                                
+                        <p:commandButton id="encaminhar" title="Encaminhar ou responder" icon="ui-icon-mail-closed" ajax="false" action="pretty:encaminha-responde-coordenador">
+                            <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.entity}" /> 
+                            <p:tooltip for="encaminhar" value="Clique aqui para Encaminhar uma resposta" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="editarFeed" title="Editar" icon="ui-icon-pencil" action="pretty:editar-feed-back-coordenador" ajax="false">
+                            <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.entity}" /> 
+                            <p:tooltip for="editarFeed" value="Clique aqui para Editar estes dados" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="excluirFeed" title="Excluir" icon="ui-icon-trash" action="#{UserFeedbackController.remove()}" ajax="false">
+                            <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.entity}" /> 
+                            <p:tooltip for="excluirFeed" value="Clique aqui para Excluir estes dados" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </h:panelGrid>
+                </p:column>
+
+            </p:dataTable>
+            <br/><br/><br/>
+            <h:outputText value="Encaminhados" />
+            <p:dataTable emptyMessage="Não há registros." value="#{UserFeedbackController.encaminhados}" var="feedback" resizableColumns="true">
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{feedback.id}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Nome" /></f:facet>  
+                    <h:outputText value="#{feedback.usuario.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Turma" /></f:facet>  
+                    <h:outputText value="#{feedback.turma.codigoTurma}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situação" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problema Associado" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Data do encaminhamento" /></f:facet>  
+                    <h:outputText value="#{feedback.dataEncaminhamento}" />  
+                </p:column>   
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="visualizarIn" alt="Visualise informações" value="Abrir" oncomplete="visualizarEncaminhamento.show()" update="dialog2">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.mostrar}" /> 
+                        <p:tooltip for="visualizarIn" value="Clique aqui para Visualizar as informações" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                    <p:commandButton id="excluirIn" alt="Excluir" value="Excluir" action="#{UserFeedbackController.remove()}" ajax="false">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.entity}" /> 
+                        <p:tooltip for="excluirIn" value="Clique aqui para Excluir estes dados" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <br/><br/><br/>
+            <h:outputText value="Respondidos" />
+            <p:dataTable emptyMessage="Não há registros." value="#{UserFeedbackController.respondidos}" var="feedback" resizableColumns="true">
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{feedback.id}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Nome" /></f:facet>  
+                    <h:outputText value="#{feedback.usuario.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Turma" /></f:facet>  
+                    <h:outputText value="#{feedback.turma.codigoTurma}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situação" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problema Associado" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Data da Resposta" /></f:facet>  
+                    <h:outputText value="#{feedback.dataSolicitacao}" />  
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="visualizarRespon" alt="Visualise informações" value="Abrir" oncomplete="visualizar.show()" update=":dialog">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.mostrar}" /> 
+                        <p:tooltip for="visualizarRespon" value="Clique aqui para Visualizar as informações" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <br/><br/><br/>
+            <h:outputText value="Encaminhados para mim" />                                         
+            <p:dataTable emptyMessage="Não há registros." value="#{UserFeedbackController.byResponsavel}" var="feedback" resizableColumns="true">
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{feedback.id}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Nome" /></f:facet>  
+                    <h:outputText value="#{feedback.usuario.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Turma" /></f:facet>  
+                    <h:outputText value="#{feedback.turma.codigoTurma}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situação" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problema Associado" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Data do encaminhamento" /></f:facet>  
+                    <h:outputText value="#{feedback.dataEncaminhamento}" />  
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="responderInfo" alt="Responder" value="Responder" ajax="false" action="pretty:responder-coordenador">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.entity}" /> 
+                        <p:tooltip for="responderInfo" value="Clique aqui para Enviar resposta" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+            <br/><br/><br/>
+            <h:outputText value="Respondidos por mim" />
+            <p:dataTable emptyMessage="Não há registros." value="#{UserFeedbackController.respondidosResponsavel}" var="feedback" resizableColumns="true">
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{feedback.id}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Nome" /></f:facet>  
+                    <h:outputText value="#{feedback.usuario.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Turma" /></f:facet>  
+                    <h:outputText value="#{feedback.turma.codigoTurma}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Situação" /></f:facet>  
+                    <h:outputText value="#{feedback.situacoes.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Problema Associado" /></f:facet>  
+                    <h:outputText value="#{feedback.problemasAssociados.nome}" />  
+                </p:column>  
+
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" Data da resposta" /></f:facet>  
+                    <h:outputText value="#{feedback.dataResposta}" />  
+                </p:column>   
+
+                <p:column>
+                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                    <p:commandButton id="visualizarResp" alt="Visualise informações" value="Abrir" oncomplete="visualizar.show()" update=":dialog">
+                        <f:setPropertyActionListener value="#{feedback}" target="#{UserFeedbackController.mostrar}" /> 
+                        <p:tooltip for="visualizarResp" value="Clique aqui para Visualizar as informações" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>                                             
+
+            <p:dialog widgetVar="visualizar" id="dialog" closable="true">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel value="ID: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.id}" />
+                    <h:outputLabel value="Situação: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.situacoes.nome}" />
+                    <h:outputLabel value="Problema Associado: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.problemasAssociados.nome}" />
+                    <h:outputLabel value="Turma: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.turma.codigoTurma}" />
+                    <h:outputLabel value="Descrição: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.descricao}" />
+                    <h:outputLabel value="Data da Solicitação: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataSolicitacao}" />
+                    <h:outputLabel value="Data da Encaminhamento: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataEncaminhamento}" />
+                    <h:outputLabel value="Data da Resposta: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataResposta}" />
+                    <h:outputLabel value="Status: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.status}" />
+                    <h:outputLabel value="Resposta: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.resposta}" />
+                </h:panelGrid>
+            </p:dialog>          
+
+            <p:dialog widgetVar="visualizarEncaminhamento" id="dialog2" closable="true" position="center center">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel value="Situação: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.situacoes.nome}" />
+                    <h:outputLabel value="Problema Associado: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.problemasAssociados.nome}" />
+                    <h:outputLabel value="Turma: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.turma.codigoTurma}" />
+                    <h:outputLabel value="Descrição: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.descricao}" />
+                    <h:outputLabel value="Data da Solicitação: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataSolicitacao}" />
+                    <h:outputLabel value="Data da Encaminhamento: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.dataEncaminhamento}" />                                                                
+                    <h:outputLabel value="Encaminhado para: " style="font-weight: bold;"/>
+                    <h:outputLabel value="#{UserFeedbackController.mostrar.responsavel.nome}" />                                                                
+                </h:panelGrid>
+            </p:dialog>                                                                                              
+        </h:form>       
+    </ui:define>
+</ui:composition>

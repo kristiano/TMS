@@ -1,0 +1,32 @@
+--- Alterações realizadas:
+
+Proposta e controller
+Capitulo e controller
+Projeto e controller
+paginas xhtml em usuarios/academico
+
+--- Alterações a realizar:
+
+named querys em capitulo. Deve-se criar uma query especifica que liste os capitulos por id_projeto	getByProjeto 	feito
+named querys em proposta e projeto. query por id de usuario logado				
+
+Proposta 
+	-> getByAcademico				feito	
+Projeto
+	-> getByAcademico()	 			feito
+
+
+Fernando
+
+Observações:
+
+Propostas Status e projetos
+1 - aprovada
+2 - tanto faz
+... até infinito
+
+Feito Projetos e Propostas de professor
+
+Terminado coordenação, só falta bugs
+
+

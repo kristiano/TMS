@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.ds.PGSimpleDataSource</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.240.8/tms</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">123456</property>           
+        <property name="hibernate.hbm2ddl.auto">update</property>
+    </session-factory>
+  
+    <!-- Atributos de Proposta !-->
+    <class name="Proposta" table="proposta" >                   
+        <list name="feedBack" cascade="all"  lazy="false">
+            <key column="feedback_id"/>
+            <one-to-many class="FeedBack"/>
+        </list>      
+        <list name="professor"   lazy="false">
+            <key column="professor_id"/>
+            <many-to-many class="Professor"/>
+        </list>      
+        <list name="areaAtuacao"   lazy="false">
+            <key column="areaatuacao_id"/>
+            <many-to-many class="AreaAtuacao"/>
+        </list>      
+    </class>
+    
+    <!-- Atributos de Projeto !-->
+    <class name="Projeto" table="projeto" >                   
+        <list name="feedBack" cascade="all"  lazy="false">
+            <key column="feedback_id"/>
+            <one-to-many class="FeedBack"/>
+        </list>  
+        <list name="capitulos"  inver="true"  cascade="all"  lazy="false">
+            <key column="capitulos_id"/>
+            <one-to-many class="Capitulo"/>
+        </list>      
+    </class>
+    <!-- Atributos de Turma !-->
+    <class name="Turma" table="turma" >                   
+        <list name="coordenador"  inverse="true" lazy="false">
+            <key column="coordenador_id"/>
+            <many-to-many class="Professor"/>
+        </list>        
+    </class>
+    
+    <!-- Atributos de Capitulo !-->
+    <class name="Capitulo" table="capitulo" >                   
+        <list name="feedBack" cascade="all"  lazy="false">
+            <key column="feedback_id"/>
+            <one-to-many class="FeedBack"/>
+        </list>      
+    </class>
+    
+    <class name="Banca" table="banca" >                   
+        <list name="avaliadores"  lazy="false">
+            <key column="avaliadores_id"/>
+            <one-to-many class="Professor"/>
+        </list>      
+    </class>
+    
+    <class name="Curso" table="curso" >                   
+        <list name="academicos" inverse="true" lazy="false">
+            <key column="academicos_id"/>
+            <one-to-many class="Academico"/>
+        </list>      
+    </class>
+    
+    <class name="Curso" table="curso" >                   
+        <list name="professores" inverse="true" lazy="false">
+            <key column="professores_id"/>
+            <many-to-many class="Professor"/>            
+        </list>      
+    </class>
+    
+    <class name="Professor" table="professor" >                   
+        <list name="turmas" inverse="true" lazy="false">
+            <key column="turmas_id"/>
+            <many-to-many class="Turma"/>
+        </list>      
+    </class>
+    
+    <class name="Professor" table="professor" >                   
+        <list name="cursos" inverse="true" lazy="false">
+            <key column="cursos_id"/>
+            <many-to-many class="Curso"/>
+        </list>      
+    </class>
+    
+    
+</hibernate-configuration>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        UserFeedback - Problems associates
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">                
+        <h:form class="conteudo">
+            <h:outputLabel value="problems associated" style="font-weight: bold;"/><br/><br/>
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <h:outputLabel value="name: " style="font-weight: bold;"/>                    
+            <h:inputText title="Digite o nome do novo Problema Associado" value="#{ProblemasAssociadosController.entity.nome}" />
+            <p:commandButton id="buttonInserirP" value="insert" actionListener="#{ProblemasAssociadosController.insert()}" update=":centro">
+                <p:tooltip for="buttonInserirP" value="Clique aqui para Inserir no Sistema" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br/><br/><br/>
+            <p:dataTable emptyMessage="no records" value="#{ProblemasAssociadosController.list}" var="situacao" resizableColumns="true">
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" ID" /></f:facet>  
+                    <h:outputText value="#{situacao.id}" />  
+                </p:column>  
+                <p:column >  
+                    <f:facet name="header"><h:outputText value=" name" /></f:facet>  
+                    <h:outputText value="#{situacao.nome}" />  
+                </p:column>  
+                <p:column>
+                    <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                    <p:commandButton id="buttonExcluirP" alt="remove" value="remove" action="#{ProblemasAssociadosController.remove()}" ajax="false">
+                        <f:setPropertyActionListener value="#{situacao}" target="#{ProblemasAssociadosController.entity}" /> 
+                        <p:tooltip for="buttonExcluirP" value="Clique aqui para Excluir do Sistema" showEffect="fade" hideEffect="fade"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>            

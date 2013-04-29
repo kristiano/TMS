@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"> 
+
+    <ui:define name="title">
+       
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>      
+
+    <ui:define name="conteudo">                      
+        <h:body>           
+            <p:messages/>        
+            <p:panel rendered="#{DisciplinaController.list.size() > 0}"> 
+                <h4>research project</h4><br/>            
+                <h:outputLabel value="Select one research project to visualize its average and variance." />    
+                <h:form>
+                    <h:selectOneMenu value="#{DisciplinaController.auxDisciplina}" converter="baseEntityConverter" required="true">
+                        <f:selectItem itemLabel="select ..." itemDisabled="true" />  
+                        <f:selectItems value="#{DisciplinaController.list}" var="disciplina" itemLabel="#{disciplina.nome}" itemValue="#{disciplina}" />                  
+                    </h:selectOneMenu> 
+                    <p:commandButton action="#{DisciplinaController.calcularMediaEVariancia()}" ajax="false" value="choose research project"/>
+                </h:form>   
+            </p:panel> 
+            <p:panel rendered="#{DisciplinaController.list.size() == 0}">
+                <h4>the are not research project to be evaluated.</h4>
+            </p:panel>
+            <h:form class="conteudo">
+                <h:outputText value="this transplantation research has not evaluated transplantation units. " style="font-weight: bold;" rendered="#{DisciplinaController.auxMediaTurmas.size() == 0}"/>
+
+                <h:panelGroup id="teste" rendered="#{DisciplinaController.auxMediaTurmas.size() > 0}" >
+                    <h:outputText value="selected research project:" style="font-weight: bold;"/>
+                    <h:outputText value="#{DisciplinaController.auxDisciplina.nome}"/> <br/>
+
+                    <br/>
+                    <h:panelGroup rendered="#{DisciplinaController.auxMediaTurmas != null}" >
+                        <h:outputText value="Average " style="font-weight: bold;"/>
+                        <h:outputText value="#{DisciplinaController.auxMedia}">
+                            <f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="" />     
+                        </h:outputText>
+                        <br/>  
+
+                        <h:outputText value="Variance " style="font-weight: bold;"/>
+                        <h:outputText value="#{DisciplinaController.auxVariancia}">    
+                            <f:convertNumber maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14" type="currency" currencySymbol="" />     
+                        </h:outputText><br/> 
+
+                        <h:outputText value="Number of evaluated research project: " style="font-weight: bold;"/>
+                        <h:outputText value="#{DisciplinaController.auxMediaTurmas.size()}"/> <br/> 
+                    </h:panelGroup>
+
+
+                </h:panelGroup>   
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>

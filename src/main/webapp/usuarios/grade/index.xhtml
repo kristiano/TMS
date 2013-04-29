@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">    
+
+    <ui:define name="conteudo">                      
+        <h:body>            
+            <h:outputLink style="color: #009900;" value="#{facesContext.externalContext.request.contextPath}/area-academico/grade/avaliar-turmas">Avaliar Turmas</h:outputLink><br/>
+            <h:outputLink style="color: #009900;" value="#{facesContext.externalContext.request.contextPath}/area-academico/grade/minha-banca">Minha banca</h:outputLink><br/>            
+        </h:body>
+    </ui:define>
+</ui:composition>

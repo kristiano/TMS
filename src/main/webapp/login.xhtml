@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout_login.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">                       
+
+
+    <ui:define name="title">
+        TMS - Login
+    </ui:define>           
+
+    <ui:define name="conteudo">            
+        <div class="conteudo">
+            <center>
+                <p:panel style="border: none; background: none;">
+                    <form action="j_spring_security_check" method="post">                                
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel value="User" style="font-weight: bold;"/>
+                            <h:inputText id="j_username" required="true"/>
+                            <h:outputLabel  value="Password" style="font-weight: bold;"/>                                                                        
+                            <h:inputSecret id="j_password" required="true"/>                                   
+                        </h:panelGrid>
+                        <h:commandButton id="login" value="Login" style="width: 70px; height: 30px; margin-left: 238px;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                            <p:tooltip for="login" value="To login" showEffect="fade" hideEffect="fade"/>
+                        </h:commandButton> 
+                    </form>                                                            
+                </p:panel>                                            
+            </center>
+        </div>
+    </ui:define>           
+</ui:composition>

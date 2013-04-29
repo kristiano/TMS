@@ -1,0 +1,55 @@
+ui:insert
+
+	A tag INSERT demarca aonde será, por exemplo: cabeçalho.
+	
+<ui:insert name="header" > 
+	<ui:include src="/template/common/commonHeader.xhtml" />
+</ui:insert>
+
+ui:define
+
+	A tag DEFINE é utilizada nas páginas que desejam utilizar o template, correspondente a um 'insert' do template, porém, substituindo o valor padrão.
+	Caso você não queira sobrescrever o padrão do template, basta não criar um ui:define correspondente.
+
+<ui:define name="header">  
+	<h2>This is page1 header</h2>
+</ui:define>
+
+ui:composition
+	
+	A tag COMPOSITION é utilizada para compor páginas que utilizam tecnologia Facelets. O que estiver fora do escopo é ignorado.
+
+<ui:composition template="/template/common/commonLayout.xhtml">
+</ui:composition>
+
+ui:decorate
+
+	A tag DECORATE é utilizada para compor páginas que utilizam tecnologia Facelets. Porém, se existir algo fora do escopo ele aparece na tela normalmente.
+	
+<ui:composition template="/template/common/commonLayout.xhtml">
+</ui:composition>
+
+ui:include 
+
+	Inclui uma página dentro de outra página.
+	
+ui:fragment
+
+	Use no lugar de ui:composition e html quando a páginas forem incluídas via ui:include.
+	
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:h="http://java.sun.com/jsf/html"
+            xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:outputText value="Essa texto é da página fragTeste" />
+
+</ui:fragment>
+
+ui:remove
+
+	Remove um código inserido dentro do xhtml.
+	
+<ui:remove>
+	<h:outputText value="Isso não aparece na minha página remove!!" />
+</ui:remove>
+

@@ -1,0 +1,47 @@
+Lista de erros e complementos finais - SIGD versão beta 1
+
+Complementos:
+
+- Criar páginas iniciais com ícones referenciando as entradas para os menus.
+- Falta parte dos capítulos. 
+- Retirar link editar perfil.																				ok
+- Terminar sistema de projetos e capítulos																	ok
+- Falta o aluno ver o feedBack																				ok
+
+Administrador
+
+- Criar EDITAR PERFIL no Menu.																				feito
+- Criar aviso em curso que caso ele esteja atrelado a alguma disciplina ele não poderá ser apagado.			ok
+- Alterar ordem em Disciplina: Código, nome e curso															ok
+- Criar aviso em Disciplina que caso ela esteja atrelado a alguma turma ela não poderá ser apagada.			ok
+- Em turma, ao adicionar coordenador, verificar se o cargo foi modificado.									ok
+- Em turma, ao excluir coordenador, vericar se ele voltou a ser apenas professor.	
+- Editar turma					
+
+Coordenador 
+
+
+- Adicionar quantidade de projetos e propostas.																ok
+- Projetos: verificar se está funcionando. 
+- Turma: Não está excluindo ou editando
+- Não está carregando suas propostas como professor.														ok
+
+Professor
+
+- Falta copiar área de atuação.																				ok
+- Falta copiar perfil.																						ok
+
+Acadêmico:
+
+- Propostas: Retirar o acadêmico da inserção.																ok
+- Propostas: Retirar o nome selecione dos selectManyMenu.													ok
+- Adicionar quantidade de projetos e propostas.																ok
+- Capítulos: não está carregando.	
+- - Quando edita o perfil completo ele não funciona.	(Não salva telefone)								glaubos
+
+
+Erro:
+
+- Em Curso controller, atualizar list em todas as funções.													ok
+- Remover duplicidade de criação dos capítulos na criação dos projetos.										ok
+- Falta iniciar o bean de professor em ADM    																ok

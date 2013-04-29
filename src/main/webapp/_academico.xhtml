@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Grade - Banca
+    </ui:define>  
+    
+    <ui:define name="cabecalho">
+        teste
+    </ui:define> 
+    
+    <ui:define name="conteudo">
+
+        <h:body>
+            <p:messages/>          
+            <p:dialog widgetVar="inserir" id="dialog">                                                            
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5"> 
+
+                        <h:outputLabel for="matricula" value="Code: "/>  
+                        <p:inputText id="matricula" required="true" value="#{AcademicoController.entity.matricula}" />                                        
+
+                        <h:outputLabel for="username" value="Username: " rendered="#{AcademicoController.isNew}"/>  
+                        <p:inputText id="username" required="true" value="#{AcademicoController.entity.username}" rendered="#{AcademicoController.isNew}"/>                      
+
+                        <h:outputLabel for="nome" value="Full Name: "/>  
+                        <p:inputText id="nome" required="true" value="#{AcademicoController.entity.nome}" />               
+
+                        <h:outputLabel for="email" value="E-mail: "/>  
+                        <p:inputText id="email" required="true" value="#{AcademicoController.entity.email}" />                                                                          
+
+                    </h:panelGrid>  
+
+
+                    <!-- So muda o nome dos Beans-->
+                    <p:commandButton id="insertAcademico" value="Insert" actionListener="#{AcademicoController.insert}" oncomplete="inserir.hide()" rendered="#{AcademicoController.isNew}" update=":table" ajax="false"/>
+                    <p:commandButton id="alterAcademico" value="Update" actionListener="#{AcademicoController.update}" oncomplete="inserir.hide()" rendered="#{AcademicoController.isEdit}" update=":table" ajax="false"/>
+                </h:form>
+            </p:dialog>        
+            <h:outputText value="Patients" />
+
+            <h:form prependId="false" id="table">
+                <!-- So muda o nome do Bean-->
+                <br/>
+                <p:commandButton value="New" oncomplete="inserir.show()" actionListener="#{AcademicoController.prepareNew()}" update=":dialog"/> 
+                <br></br><br></br><br></br>                
+                <!-- Muda o Bean-->
+                <p:dataTable value="#{AcademicoController.list}" var="academico" resizableColumns="true">  
+                    <p:column style="width: 80px;">  
+                        <f:facet name="header"><h:outputText value="Code" /></f:facet>  
+                        <h:outputText value="#{academico.matricula}" />  
+                    </p:column>  
+                    <!-- De acordo com os campos da entidade-->
+                    <p:column style="width: 90px;">  
+                        <f:facet name="header"><h:outputText value="Username" /></f:facet>  
+                        <h:outputText value="#{academico.username}" />  
+                    </p:column>  
+
+                    <p:column style="width: 150px;">  
+                        <f:facet name="header"><h:outputText value="Full name" /></f:facet>  
+                        <h:outputText value="#{academico.nome}" />  
+                    </p:column>  
+
+                    <!-- So muda o nome do Bean-->
+                    <p:column>
+                        <h:panelGrid columns="2" cellpadding="5">                                            
+                            <p:commandButton value="Remove" action="#{AcademicoController.remove}" update=":table"> 
+                                <f:setPropertyActionListener value="#{academico}" target="#{AcademicoController.entity}" /> 
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </p:column>
+                </p:dataTable> 
+                <br/>
+            </h:form>
+        </h:body>             
+    </ui:define>
+</ui:composition>

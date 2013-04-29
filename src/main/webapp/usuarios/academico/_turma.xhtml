@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Transplantation Unit
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">        
+        <h:form prependId="false" class="conteudo" id="dialog">
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:dialog widgetVar="inserir"  resizable="false" closable="true" maximizable="true">                        
+
+                <h:panelGrid columns="1" cellpadding="5"> 
+                    <h:outputLabel  value="year"/>                                                           
+                    <p:spinner  min="2013" max="3000" title="Selecione o ano" value="#{TurmaController.entity.ano}"  required="true" requiredMessage="digite o ano. Ex.: 2013" />                     
+                    <h:outputLabel  value="code "/>  
+                    <p:inputText  title="Exemplo: 422332BBC" id="codigo" required="true" value="#{TurmaController.entity.codigoTurma}" />  
+                  <!--  <p:inputText  title="Exemplo: 42313614" id="codigo" required="true" value="#{TurmaController.entity.codigoTurma}" />     --> 
+                    <h:outputLabel  value="semester "/>  
+                    <p:spinner min="1" max="2"   title="digite o Semestre" id="nome" required="true" value="#{TurmaController.entity.semestre}" min="1" max="2"/>   
+                    <h:outputLabel  value="research project"/>  
+                    <h:selectOneMenu value="#{TurmaController.entity.disciplina}"  style="width:100px;" converter="baseEntityConverter">                                    
+                        <f:selectItem itemLabel="select" itemValue="" />
+                        <f:selectItems  value="#{DisciplinaController.list}" var="disciplina" itemLabel="#{disciplina.nome}" itemValue="#{disciplina}"  />
+                    </h:selectOneMenu>
+                    <h:outputLabel rendered="#{TurmaController.isEdit}" value="coordination"/>
+                    <p:dataList rendered="#{TurmaController.isEdit}" var="coordenador" value="#{TurmaController.entity.coordenador}">
+                        #{coordenador.nome}                        
+                    </p:dataList>
+
+                    <h:outputLabel rendered="#{TurmaController.isNew}" value="coordination"/>
+                    <p:selectManyMenu rendered="#{TurmaController.isNew}" value="#{TurmaController.entity.coordenador}" style="width:100px;" converter="baseEntityConverter">                                                             
+                        <f:selectItems  value="#{ProfessorController.list}" var="coordenadores" itemLabel="#{coordenadores.nome}" itemValue="#{coordenadores}"  />
+                    </p:selectManyMenu> 
+                </h:panelGrid>  
+
+                <!-- So muda o nome dos Beans-->
+                <p:commandButton id="buttonInserirTurma" value="insert" actionListener="#{TurmaController.insert}" oncomplete="inserir.hide()" rendered="#{TurmaController.isNew}" update=":table">
+                    <p:tooltip for="buttonInserirTurma" value="Clique aqui para Inserir a Turma" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton id="buttonAtualizarTurma" value="update" actionListener="#{TurmaController.update}" oncomplete="inserir.hide()" update=":table" rendered="#{TurmaController.isEdit}">
+                    <p:tooltip for="buttonAtualizarTurma" value="Clique aqui para Atualizar a Turma" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+                <p:commandButton value="cancel" onclick="inserir.hide()" type="button"/>
+
+            </p:dialog>
+        </h:form>
+        <h:form prependId="false" id="table" class="conteudo">
+
+            <!-- So muda o nome do Bean-->
+            <p:commandButton id="buttonNovaTurma" value="New" oncomplete="inserir.show()" actionListener="#{TurmaController.prepareNew()}" update=":dialog">
+                <p:tooltip for="buttonNovaTurma" value="Clique aqui para adicionar uma nova Turma ao Sistema" showEffect="fade" hideEffect="fade"/>
+            </p:commandButton>
+            <br></br><br></br><br></br>                        
+            <!-- Muda o Bean-->
+            <p:dataTable  id = "dataTable" value="#{TurmaController.list}" var="Turma"     paginator="true" rows="10"  
+                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                          rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">  
+                    Transplantation Units
+                </f:facet>  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value=" code" /></f:facet>  
+                    <h:outputText value="#{Turma.codigoTurma}" />  
+                </p:column>  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="semester " /></f:facet>  
+                    <h:outputText value="#{Turma.ano}/#{Turma.semestre}" />  
+                </p:column>  
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="transplantation research" /></f:facet>  
+                    <h:outputText value="#{Turma.disciplina.nome}" />   
+                </p:column> 
+                <p:column>  
+                    <f:facet name="header"><h:outputText value="avarage" /></f:facet>  
+                    <h:outputText value="#{Turma.notaMedia}" />   
+                </p:column>  
+                <p:column>
+                    <f:facet name="header"><h:outputText value="actions" /></f:facet>  
+                    <div id="acao">
+                        <p:commandButton id="buttonEditarTurma" value="edit" oncomplete="inserir.show()" actionListener="#{TurmaController.prepareEdit}"  update=":dialog">
+                            <f:setPropertyActionListener value="#{Turma}" target="#{TurmaController.entity}" /> 
+                            <p:tooltip for="buttonEditarTurma" value="Clique aqui para Editar esta Turma" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                        <p:commandButton id="buttonExcluirTurma" value="remove" action="#{TurmaController.remove}" update=":table"> 
+                            <f:setPropertyActionListener value="#{Turma}" target="#{TurmaController.entity}" /> 
+                            <p:tooltip for="buttonExcluirTurma" value="Clique aqui para Excluir esta Turma" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>   
+                    </div>
+                </p:column>
+            </p:dataTable>                                         
+        </h:form>       
+    </ui:define>
+</ui:composition>

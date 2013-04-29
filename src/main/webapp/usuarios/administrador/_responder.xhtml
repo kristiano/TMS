@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        UserFeedback - Responder
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+        <h:form prependId="false" class="conteudo">                                                  
+            <h:panelGrid columns="2" cellpadding="5">
+                <h:outputLabel value="Situação: " style="font-weight: bold;"/>
+                <h:outputLabel value="#{UserFeedbackController.entity.situacoes.nome}" />
+                <h:outputLabel value="Problema Associado: " style="font-weight: bold;"/>
+                <h:outputLabel value="#{UserFeedbackController.entity.problemasAssociados.nome}" />
+                <h:outputLabel value="Turma: " style="font-weight: bold;"/>
+                <h:outputLabel value="#{UserFeedbackController.entity.turma.codigoTurma}" />
+                <h:outputLabel value="Descrição: " style="font-weight: bold;"/>
+                <h:outputLabel value="#{UserFeedbackController.entity.descricao}" />
+                <h:outputLabel value="Data da Solicitação: " style="font-weight: bold;"/>
+                <h:outputLabel value="#{UserFeedbackController.entity.dataSolicitacao}" />
+                <h:outputLabel value="Encaminhar para: " style="font-weight: bold;"/>
+                <h:selectOneMenu value="#{UserFeedbackController.entity.responsavel}" converter="baseEntityConverter"  style="width:250px;" >
+                    <f:selectItem itemLabel=" - Selecione - " itemValue=""/>
+                    <f:selectItems  value="#{ProfessorController.list}" var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}"  />
+                </h:selectOneMenu>
+                <h:outputLabel value="*Responder: " style="font-weight: bold;"/>
+                <p:inputTextarea title="Digite sua Resposta" rows="6" cols="60" value="#{UserFeedbackController.entity.resposta}"/>  
+                <p:commandButton id="buttonEnviar" value="Enviar" ajax="false" action="pretty:user-feedback-administrador">
+                    <p:tooltip for="buttonEnviar" value="Clique aqui para Enviar sua Resposta" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+            </h:panelGrid>
+            <h:outputLabel value="*Caso tenha setado um responsável a resposta será ignorada." style="font-weight: bold;"/>
+        </h:form>                           
+    </ui:define>                  
+</ui:composition>

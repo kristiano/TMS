@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+         <h:head>
+                <title>SIGD - Sistema de Gerenciamento de Projetos de Graduação</title>
+                <link href="style.css" rel="stylesheet" type="text/css" />  
+        </h:head>
+    <ui:composition template="template/nofilter.xhtml">    
+        <ui:define name="conteudo">
+                <h:messages/>
+    <h:form>
+        <h:outputLabel for="pwd1" value="Senha*" />  
+        <p:password id="pwd1" value="#{PasswordRecoveryController.entity.usuario.password}" match="pwd2" label="Password 1" required="true"/>  
+        <h:outputLabel for="pwd2" value="Confirmar Senha*" />  
+        <p:password id="pwd2" value="#{PasswordRecoveryController.entity.usuario.password}" label="Password 2" required="true"/>
+        <p:commandButton value="Inserir" actionListener="#{PasswordRecoveryController.resetPassword}" ajax="false"/>
+    </h:form>
+        </ui:define> 
+    </ui:composition>
+</html>

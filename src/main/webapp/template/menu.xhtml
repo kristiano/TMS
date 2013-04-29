@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">                       
+    <h:body>            
+        <nav id="menu">
+            <ul>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/" class="link-menu">link 01</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/" class="link-menu">link 02</h:outputLink></li>
+            </ul>
+        </nav>
+    </h:body>    
+</ui:composition>
+

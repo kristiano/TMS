@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">    
+
+    <ui:define name="conteudo">                      
+        <h:body>            
+            <h:outputLabel value="Banca: " for="banca"/>            
+            <p:selectOneMenu value="#{gradeController.auxBanca}" effect="fold" converter="Converter" id="banca" required="true">
+                <f:selectItem itemLabel="Selecione ..." itemDisabled="true" />  
+                <f:selectItems value="#{BancaController.defendidasPorAvaliador}" var="banca" itemLabel="#{banca.projeto.proposta.titulo}" itemValue="#{banca}" />  
+                <p:ajax event="change" update="render"/> 
+            </p:selectOneMenu> 
+            <h:panelGroup id="render">
+                <h:outputText value="Título: " style="font-weight: bold;"/>
+                <h:outputText value="#{gradeController.auxBanca.projeto.proposta.titulo}"/> <br/>
+                <h:outputText value="Acadêmico: " style="font-weight: bold;"/>
+                <h:outputText value="#{gradeController.auxBanca.projeto.proposta.academico.nome}"/> <br/>
+                <p:separator />
+                <h:outputText value="Avaliações" style="font-weight: bold;"/><br/>
+                <ui:repeat value="#{gradeController.auxBanca.avaliadores}" var="avaliador" >                                   
+                    <p>
+                        <h:outputText value="Nome: " style="font-weight: bold;"/>
+                        <h:outputText value="#{avaliador.nome}"/> <br/>
+                        <h:outputText value="Nota: " style="font-weight: bold;"/>
+                        <h:outputText value="#{gradeController.porId(avaliadores.id).valor}"/> <br/>
+                        <h:outputText value="Observação: " style="font-weight: bold;"/>
+                        <h:outputText value="#{gradeController.porId(avaliadores.id).conteudo}"/> 
+                    </p>
+                </ui:repeat> 
+                <h:outputText value="Media: " style="font-weight: bold;"/>
+                <h:outputText value="#{gradeController.auxBanca.notaMedia}"/> <br/>
+                
+                <h:outputText value="Minha avaliação: " style="font-weight: bold;"/>
+                <p:separator />
+                <p>
+                    <h:form>
+                        <h:outputText value="Nota: " style="font-weight: bold;"/>
+                        <h:outputText value="#{gradeController.entity.valor}"/> <br/>
+                        <h:outputText value="Observações: " style="font-weight: bold;"/>
+                        <h:outputText value="#{gradeController.entity.conteudo}"/><br/>                        
+                        <p:commandButton value="Inserir Avaliação" action="pretty:grade-index" actionListener="#{gradeController.avaliarBanca()}"/><br/>
+                        <p:commandButton action="pretty:grade-index" ajax="false" style="color: black;" value="Voltar" immediate="true"/> 
+                    </h:form>
+                </p>
+
+            </h:panelGroup>               
+        </h:body>
+    </ui:define>
+</ui:composition>

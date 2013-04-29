@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Grade
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="../menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">
+        <h:body>
+            <p:panel header="Grade">
+                
+                <h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/grade/banca-grade" class="link-menu">committee</h:outputLink><br/>
+                <h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/grade/turma-grade" class="link-menu">transplantation research</h:outputLink><br/>
+                <h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-coordenador/grade/linhadotempo-grade" class="link-menu">timeline</h:outputLink><br/>
+            </p:panel> 
+        </h:body>
+    </ui:define>
+</ui:composition>

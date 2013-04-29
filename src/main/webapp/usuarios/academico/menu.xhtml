@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">                       
+    <h:body>            
+        <nav id="menu">
+            <ul>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico/propostas" class="link-menu">Proposal</h:outputLink></li>                
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico/projetos" class="link-menu">Projects</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico/capitulos" class="link-menu">Phases</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico/userFeedback" class="link-menu">User Feedback</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico/avaliar-turmas-grade" class="link-menu">Evaluating</h:outputLink></li>
+                <li><h:outputLink value="#{facesContext.externalContext.request.contextPath}/area-academico/perfil" class="link-menu">Edit Profile</h:outputLink></li>
+            </ul>
+        </nav>
+    </h:body>    
+</ui:composition>
+

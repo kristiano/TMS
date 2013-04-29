@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        Grade - Turma
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="../menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">                    
+        <h:body>         
+            <h:form class="conteudo" id="dialog">
+            <p:dialog widgetVar="avaliar"  width="500" height="300" closable="false">                        
+                
+                    <h:outputText value="Acadêmico " style="font-weight: bold;"/>
+                    <p:selectOneMenu  id="academico" value="#{GradeController.auxAcademico}" converter="baseEntityConverter">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItems value="#{GradeController.auxTurma.academicos}" var="academico" itemLabel="#{academico.nome}" itemValue="#{academico}" />                                                                                        
+                    </p:selectOneMenu>
+                    
+                    <p:separator />
+                    
+                    <h:outputText value="Media: " style="font-weight: bold;"/>
+                    <h:outputText value="#{GradeController.auxTurma.notaMedia}"/> <br/>
+                    
+                    <p:separator />
+                    
+                    <h:outputText value="Minha avaliação: " style="font-weight: bold;"/>                    
+
+                    <p>                        
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Nota: " style="font-weight: bold;"/>
+                            <h:inputText value="#{GradeController.entity.valor}"/> 
+                            <h:outputText value="Observações: " style="font-weight: bold;"/>
+                            <h:inputTextarea value="#{GradeController.entity.conteudo}"/>                       
+                            <p:commandButton value="Inserir Avaliação" actionListener="#{GradeController.avaliarAlunoTurma()}" ajax="false"/>
+                            <p:commandButton action="pretty:coordenador" ajax="false" value="Voltar" immediate="true" /> 
+                        </h:panelGrid>                              
+                    </p>    
+               
+            </p:dialog>
+                 </h:form>
+            
+            <h:form prependId="false" id="table" class="conteudo">                                    
+                <p:messages autoUpdate="true" showDetail="true"/>
+                <!-- Muda o Bean-->
+                <p:dataTable emptyMessage="Não há turmas disponíveis para avaliação."  value="#{ProfessorController.professorLogado.turmas}" var="turma" paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10">                    
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value=" Período" /></f:facet>  
+                        <h:outputText value="#{turma.ano} / #{turma.semestre}" />  
+                    </p:column>  
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Disciplina" /></f:facet>  
+                        <h:outputText value="#{turma.disciplina.nome}" />  
+                    </p:column> 
+
+                    <p:column>  
+                        <f:facet name="header"><h:outputText value="Nota média" /></f:facet>  
+                        <h:outputText value="#{turma.notaMedia}" />  
+                    </p:column>  
+
+                    <!-- So muda o nome do Bean-->
+
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+                        <p:commandButton id="avaliar" icon="ui-icon-search" title="Avaliar" oncomplete="avaliar.show()" update=":dialog,:table">
+                            <f:setPropertyActionListener value="#{turma}" target="#{GradeController.auxTurma}" /> 
+                            <p:tooltip for="avaliar" value="Clique aqui para ver as avaliações e avaliar a banca" showEffect="fade" hideEffect="fade"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>                        
+            </h:form> 
+        </h:body>
+    </ui:define>
+</ui:composition>

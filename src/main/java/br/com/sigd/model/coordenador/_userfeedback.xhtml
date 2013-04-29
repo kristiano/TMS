@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                >   
+
+
+    <ui:define name="title">
+        User Feedback
+    </ui:define>  
+
+    <ui:define name="menu-geral">
+        <ui:include src="menu.xhtml" />
+    </ui:define>            
+
+    <ui:define name="conteudo">                 
+        <h:form prependId="false" class="conteudo">                          
+            <p:commandButton value="Listar" action="pretty:listar-coordenador" ajax="false"/>
+            <h:panelGrid columns="2" cellpadding="5" >
+                <h:outputLabel value="Situação" />
+                <h:selectOneMenu  requiredMessage="Escolha uma situação" value="#{UserFeedbackController.entity.situacoes}" converter="baseEntityConverter"  style="width:250px;" >
+                    <f:selectItem itemLabel=" - Selecione - " itemValue=""/>
+                    <f:selectItems  value="#{SituacoesController.list}" var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}"  />
+                </h:selectOneMenu>
+                <h:outputLabel value="Problema Associado" />
+                <h:selectOneMenu  requiredMessage="Escolha uma situação" value="#{UserFeedbackController.entity.problemasAssociados}" converter="baseEntityConverter"  style="width:250px;" >
+                    <f:selectItem itemLabel=" - Selecione - " itemValue=""/>
+                    <f:selectItems  value="#{ProblemasAssociadosController.list}" var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}"  />
+                </h:selectOneMenu>
+                <h:outputLabel value="Turma" />
+                <h:selectOneMenu  requiredMessage="Escolha uma situação" value="#{UserFeedbackController.idTurma}" style="width:250px;">
+                    <f:selectItem itemLabel=" - Selecione - " itemValue=""/>
+                    <f:selectItems  value="#{TurmaController.list}" var="obj" itemLabel="#{obj.ano} / #{obj.semestre} - #{obj.disciplina.nome}" itemValue="#{obj.id}"  />
+                </h:selectOneMenu>
+                <h:outputLabel value="Descrição" />
+                <p:inputTextarea title="Digite a descrição do feedback" rows="6" cols="50" value="#{UserFeedbackController.entity.descricao}" />  
+                <p:commandButton id="buttonEnviarFeed" value="Enviar" action="#{UserFeedbackController.insert()}" actionListener="pretty:listar-coordenador" ajax="false">
+                    <p:tooltip for="buttonEnviarFeed" value="Clique aqui para Enviar este feedback" showEffect="fade" hideEffect="fade"/>
+                </p:commandButton>
+            </h:panelGrid>
+        </h:form>     
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,83 @@
+   <ui:composition
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:p="http://primefaces.org/ui"
+                    xmlns:ui="http://java.sun.com/jsf/facelets"
+                    xmlns:h="http://java.sun.com/jsf/html"
+                    xmlns:f="http://java.sun.com/jsf/core"
+                    >   
+                <ui:composition>   
+                    
+                      <h:form prependId="false">
+
+                        <p:dialog widgetVar="feedback" id="dialog" width="450" height="300">                        
+
+                            <h:panelGrid columns="2" cellpadding="5">                                                                
+
+                                <h:outputText  value="Status: " />
+                                <p:selectOneMenu value="#{CapituloController.entity.status}">
+                                    <f:selectItems value="#{ProjetoStatusController.list}" var="projetostatus" itemLabel="#{projetostatus.nome}" itemValue="#{projetostatus.nome}" />                                                                                        
+                                </p:selectOneMenu>      
+
+                                <h:outputLabel  value="Feedback:"/>  
+                                <p:inputTextarea title="Escreva seu feedback" value="#{CapituloController.feedBack}" style="width: 300px" autoResize="no"/>                                 
+
+                                <h4>Log:</h4>
+                                <p:dataList value="#{CapituloController.entity.feedBack}" var="feedback" type="ordered">
+                                    #{feedback.feedback} - #{feedback.data}<br/>
+                                </p:dataList>
+
+                            </h:panelGrid>                                                          
+
+                            <p:commandButton id="atualizarCap" value="Atualizar" actionListener="#{CapituloController.update()}" oncomplete="feedback.hide()" rendered="#{CapituloController.isEdit}" ajax="false">
+                                <p:tooltip for="atualizarCap" value="Clique aqui para Atualizar o capitulo" showEffect="fade" hideEffect="fade"/>
+                            </p:commandButton>
+
+                        </p:dialog>
+                    </h:form>
+                   
+                    <h:form prependId="false">
+                        <p:messages autoUpdate="true" showDetail="true"/>
+                        <h:outputLabel   value="Projeto "/> 
+                        <h:selectOneMenu value="#{CapituloController.idProjetoBusca}" style="width:250px;" >                            
+                            <f:selectItems  value="#{ProjetoController.byProfessor}" var="obj" itemLabel="#{obj.proposta.titulo}" itemValue="#{obj.id}"  />
+                        </h:selectOneMenu>                              
+                        
+                        <p:commandButton value="Mostrar Capítulos" update="dtCapitulos"/>
+
+                        <br></br><br></br><br></br>                        
+                            <!-- Muda o Bean-->
+
+                            <p:dataTable  id="dtCapitulos" value="#{CapituloController.byProjeto}" var="Capitulo" resizableColumns="true">  
+                                <p:column>  
+                                    <f:facet name="header"><h:outputText value="Número" /></f:facet>  
+                                    <h:outputText value="#{Capitulo.nome}" />  
+                                </p:column>  
+                                <!-- De acordo com os campos da entidade-->
+
+                                <p:column>  
+                                    <f:facet name="header"><h:outputText value="Situacao" /></f:facet>  
+                                    <h:outputText value="#{Capitulo.status}" />  
+                                </p:column>  
+
+
+                                <!-- So muda o nome do Bean-->
+                                <p:column>
+                                    <f:facet name="header"><h:outputText value="Ações" /></f:facet>  
+
+                                    <p:commandButton value="Upload" ajax="false">  
+                                        <f:setPropertyActionListener value="#{Capitulo}" target="#{CapituloController.entity}" />
+                                        <p:fileUpload fileUploadListener="#{CapituloController.upFile}" /> 
+                                    </p:commandButton>
+                                    <p:commandButton value="Download" ajax="false">  
+                                        <f:setPropertyActionListener value="#{Capitulo}" target="#{CapituloController.entity}" />
+                                        <p:fileDownload  value="#{CapituloController.file}"  />  
+                                    </p:commandButton>
+                                    <p:commandButton id="feedbackCap" value="FeedBack" oncomplete="feedback.show()" update=":dialog" actionListener="#{CapituloController.prepareEdit}">  
+                                        <f:setPropertyActionListener value="#{Capitulo}" target="#{CapituloController.entity}" /> 
+                                        <p:tooltip for="feedbackCap" value="Clique aqui para Visualizar o feedback" showEffect="fade" hideEffect="fade"/>
+                                    </p:commandButton>                                    
+                                </p:column>
+                            </p:dataTable>                        
+                    </h:form>       
+                </ui:composition>
+      
